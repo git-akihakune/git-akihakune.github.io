@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hakune Blog Backup</title>
+    <link>https://git-akihakune.github.io/</link>
+    <description>Recent content on Hakune Blog Backup</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2021</copyright>
+    <lastBuildDate>Fri, 12 Nov 2021 14:33:03 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Easy Hacktivitycon Challenges</title>
+      <link>https://git-akihakune.github.io/blog/easy-hacktivitycon/</link>
+      <pubDate>Fri, 12 Nov 2021 14:33:03 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/easy-hacktivitycon/</guid>
+      <description>Author: Aki Hakune Started writing on September 18th 2021.
+ Warmups - Tsunami Downloading the file and running file command, we get its file type - an audio file.
+Let&amp;rsquo;s think simple, and straight up open it in an audio editor - here I choose the open-source Audacity.
+And that&amp;rsquo;s it, we got the flag!
+Warmups - Pimple Follow the exact same procedure as Tsunami, we have:
+Okay so what&amp;rsquo;s a GIMP XCF image?</description>
+    </item>
+    
+  </channel>
+</rss>

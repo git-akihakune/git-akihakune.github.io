@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2021</copyright>
-    <lastBuildDate>Fri, 12 Nov 2021 14:33:03 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/tech/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Nov 2021 20:13:06 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bounty Hunter writeup</title>
+      <link>https://git-akihakune.github.io/blog/bountyhunter/</link>
+      <pubDate>Sat, 20 Nov 2021 20:13:06 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/bountyhunter/</guid>
+      <description>Author: Aki Hakune Written on September 6th 2021.
+ I. Enumeration  First things first, let&amp;rsquo;s start with a port scan!  ┌──(aki㉿kali)-[~/ctf/htb/BountyHunter] └─$ nmap -sC -sV -oN nmap.txt 10.10.11.100 Starting Nmap 7.91 ( https://nmap.org ) at 2021-09-06 23:35 EDT Nmap scan report for 10.10.11.100 Host is up (0.68s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 3072 d4:4c:f5:79:9a:79:a3:b0:f1:66:25:52:c9:53:1f:e1 (RSA) | 256 a2:1e:67:61:8d:2f:7a:37:a7:ba:3b:51:08:e8:89:a6 (ECDSA) |_ 256 a5:75:16:d9:69:58:50:4a:14:11:7a:42:c1:b6:23:44 (ED25519) 80/tcp open http Apache httpd 2.</description>
+    </item>
+    
     <item>
       <title>Easy Hacktivitycon Challenges</title>
       <link>https://git-akihakune.github.io/blog/easy-hacktivitycon/</link>

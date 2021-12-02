@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2021</copyright>
-    <lastBuildDate>Sat, 20 Nov 2021 20:13:06 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 02 Dec 2021 07:36:50 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Advent Of Cyber 3 Writeup</title>
+      <link>https://git-akihakune.github.io/blog/adventofcyber3/</link>
+      <pubDate>Thu, 02 Dec 2021 07:36:50 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/adventofcyber3/</guid>
+      <description>Author: Aki Hakune Started writing on December 2nd 2021.
+ Before reading this article, I strongly suggest you take your time and try the challenges out yourself, it will definitely worth your time!
+Since Try Hack Me has done an awesome job in explaining things plain and simple, I won&amp;rsquo;t repeat again their tutorial. Instead, I&amp;rsquo;ll try to summarize it in the most concise (but understandable) way I can.
+[Day 1] Web Exploitation Save The Gifts So, today&amp;rsquo;s learning objective seems to be IDOR vulnerability, which stands for Insecure Direct Object Reference.</description>
+    </item>
+    
     <item>
       <title>Bounty Hunter writeup</title>
       <link>https://git-akihakune.github.io/blog/bountyhunter/</link>

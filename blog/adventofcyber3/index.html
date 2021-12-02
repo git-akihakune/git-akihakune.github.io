@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Advent Of Cyber 3 Writeup | Hakune Blog Backup</title>
+
+  <meta charset="UTF-8">
+  <meta name="language" content="en">
+  <meta name="description" content="Writeup for 2021 Try Hack Me&#39;s Advent of Cyber 3">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Advent Of Cyber 3 Writeup" />
+  <meta name="twitter:description" content="Writeup for 2021 Try Hack Me&amp;#39;s Advent of Cyber 3"/>
+  <meta name="twitter:site" content="@akihakune" />
+  <meta name="twitter:creator" content="https://twitter.com/akihakune" />
+  
+
+  <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
+
+
+  
+  
+    
+ 
+  
+  
+  
+  
+  
+  
+    
+    <link type="text/css" rel="stylesheet" href="/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css" integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0="/>
+  
+    
+    <link type="text/css" rel="stylesheet" href="/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css" integrity="sha256-47DEQpj8HBSa&#43;/TImW&#43;5JCeuQeRkm5NMpJWZG3hSuFU="/>
+  
+  
+   
+   
+    
+
+<script type="application/ld+json">
+  
+    {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/git-akihakune.github.io"
+      },
+      "articleSection" : "blog",
+      "name" : "Advent Of Cyber 3 Writeup",
+      "headline" : "Advent Of Cyber 3 Writeup",
+      "description" : "Writeup for 2021 Try Hack Me\u0027s Advent of Cyber 3",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2021",
+      "datePublished": "2021-12-02 07:36:50 \u002b0700 \u002b07",
+      "dateModified" : "2021-12-02 07:36:50 \u002b0700 \u002b07",
+      "url" : "https:\/\/git-akihakune.github.io\/blog\/adventofcyber3\/",
+      "wordCount" : "471",
+      "keywords" : ["Blog"]
+    }
+  
+  </script>
+</head>
+
+<body>
+  <div class="burger__container">
+  <div class="burger" aria-controls="navigation" aria-label="Menu">
+    <div class="burger__meat burger__meat--1"></div>
+    <div class="burger__meat burger__meat--2"></div>
+    <div class="burger__meat burger__meat--3"></div>
+  </div>
+</div>
+ 
+
+  <nav class="nav" id="navigation">
+  <ul class="nav__list">
+    
+    
+      <li>
+        <a  href="/">about</a>
+      </li>
+    
+      <li>
+        <a  class="active"
+         href="/blog">blog</a>
+      </li>
+    
+  </ul>
+</nav>
+
+
+  <main>
+    
+    
+
+    <div class="flex-wrapper">
+      <div class="post__container">
+        <div class="post">
+          <header class="post__header">
+            <h1 id="post__title">Advent Of Cyber 3 Writeup</h1>
+            <time datetime="2021-12-02 07:36:50 &#43;0700 &#43;07" class="post__date">Dec 2 2021</time> 
+          </header>
+          <article class="post__content">
+              
+<h4 id="author-aki-hakune">Author: Aki Hakune</h4>
+<p>Started writing on December 2nd 2021.</p>
+<hr>
+<p>Before reading this article, I strongly suggest you take your time and <a href="https://tryhackme.com/room/adventofcyber3" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>try the challenges out yourself</a>, it will definitely worth your time!</p>
+<p>Since Try Hack Me has done an awesome job in explaining things plain and simple, I won&rsquo;t repeat again their tutorial. Instead, I&rsquo;ll try to summarize it in the most concise (but understandable) way I can.</p>
+<h2 id="day-1-web-exploitation-save-the-gifts">[Day 1] <code>Web Exploitation</code> Save The Gifts<a class="anchor" href="#day-1-web-exploitation-save-the-gifts">#</a></h2>
+<p><img src="/img/adventOfCyber3/day1/title.png" alt=""></p>
+<p>So, today&rsquo;s learning objective seems to be <a href="https://portswigger.net/web-security/access-control/idor" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>IDOR vulnerability</a>, which stands for <code>Insecure Direct Object Reference</code>.</p>
+<p>To keep it short, IDOR vulnerabilities occur when a developer doesn&rsquo;t validate requesting data, For example:</p>
+<p><img src="/img/adventOfCyber3/day1/example_url.png" alt=""></p>
+<p>See that <code>id=23</code> at the end? That is your user ID. If you change that to <code>id=0</code>, <code>id=-1</code>,<code>id=null</code> or something, and you suddenly get in another user&rsquo;s account, that is IDOR vulnerability.</p>
+<p>Beside the GET request example above, we also have IDOR in POST request:</p>
+<pre><code class="language-html">&lt;form method=&quot;POST&quot; action=&quot;/update-password&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;user_id&quot; value=&quot;123&quot;&gt;
+    &lt;div&gt;New Password:&lt;/div&gt;
+    &lt;div&gt;&lt;input type=&quot;password&quot; name=&quot;new_password&quot;&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;input type=&quot;submit&quot; value=&quot;Change Password&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+<p>&hellip; or in cookies:</p>
+<pre><code class="language-http">GET /user-information HTTP/1.1
+Host: website.thm
+Cookie: user_id=9
+User-Agent: Mozilla/5.0 (Ubuntu;Linux) Firefox/94.0
+
+Hello Jon!
+</code></pre>
+<p>And in reality, if you check public <a href="https://www.hackerone.com/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>Hackerone</a> bug submissions, you will find a great portion of IDOR vulnerabilities there.</p>
+<p>Now with all that knowledge, let&rsquo;s dive into our challenge.</p>
+<p>Upon entering that website, we&rsquo;re welcomed with a homepage like this.</p>
+<p><img src="/img/adventOfCyber3/day1/website_home.png" alt=""></p>
+<p><img src="/img/adventOfCyber3/day1/website_build.png" alt=""></p>
+<p><img src="/img/adventOfCyber3/day1/website_inventory.png" alt=""></p>
+<p>Click on anything clickable, we found out that nothing is clickable on those pages. That left us with only the page <code>Your Activity</code>.</p>
+<p><img src="/img/adventOfCyber3/day1/website_activity.png" alt=""></p>
+<p>Without any obstacle, we can instantly find a textbook vulnerability. It lies here:</p>
+<p><img src="/img/adventOfCyber3/day1/website_activity_url_bar.png" alt=""></p>
+<p>Remember, in programming languages, it usually start from 0 rather than 1. But if we try <code>?user_id=0</code>, it will scream &ldquo;lol no user like that bro&rdquo;.</p>
+<p><img src="/img/adventOfCyber3/day1/website_activity_id_0.png" alt=""></p>
+<p>But if we change that to <code>?user_id=1</code>:</p>
+<p><img src="/img/adventOfCyber3/day1/website_activity_santa.png" alt=""></p>
+<p>Guess we&rsquo;re in. :D</p>
+<p>In the wild, the number of possibilities to test is simply too massive to manually try it all. So the best way is to use on-the-spot scripts like this:</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+import requests
+
+address: str = &quot;https://inventory-management.thm/activity&quot;
+startId: int = 0
+testRange: int = 20
+
+for id in range(startId, startId + testRange):
+	response = requests.get(address, params={&quot;user_id&quot;: id})
+	if response.status_code == 200:
+		print(f&quot;Found something at {address}?user_id={id}&quot;)
+</code></pre>
+<p>Just iteratively try that id out, we also find McStocker&rsquo;s account at <code>https://inventory-management.thm/activity?user_id=3</code>.</p>
+<p><img src="/img/adventOfCyber3/day1/website_activity_mcstocker.png" alt=""></p>
+<p>And another at <code>?user_id=9</code>:</p>
+<p><img src="/img/adventOfCyber3/day1/website_activity_grinch.png" alt=""></p>
+<p>And when we click on all those <code>revert</code> (as our instinct tell us to do so), we got the final flag.</p>
+<p><img src="/img/adventOfCyber3/day1/website_activity_revert.gif" alt=""></p>
+<p>To conclude, our flags today are:</p>
+<p><code>After finding Santa's account, what is their position in the company?</code>
+The Boss!</p>
+<p><code>After finding McStocker's account, what is their position in the company?</code>
+Build Manager</p>
+<p><code>After finding the account responsible for tampering, what is their position in the company?</code>
+Mischief Manager</p>
+<p><code>What is the received flag when McSkidy fixes the Inventory Management System?</code>
+THM{AOC_IDOR_2B34BHI3}</p>
+<p>See you again in tomorrow&rsquo;s challenge! xD</p>
+
+
+              
+          </article>
+          
+
+<ul class="tags__list">
+    
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/ctf/">ctf</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/tech/">tech</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/english/">english</a>
+    </li></ul>
+
+ <div class="pagination">
+  
+    <a class="pagination__item" href="https://git-akihakune.github.io/blog/bountyhunter/">
+        <span class="pagination__label">Previous Post</span>
+        <span class="pagination__title">Bounty Hunter writeup</span>
+    </a>
+  
+
+  
+</div>
+
+          
+          <footer class="post__footer">
+            
+
+
+<div class="social-icons">
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="Twitter"
+        href="https://twitter.com/akihakune"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/twitter.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="GitHub"
+        href="https://github.com/git-akihakune"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/github.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="Email"
+        href="mailto:akihakune@gmail.com"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/email.svg')"></div>
+      </a>
+    
+     
+</div>
+
+            <p>© 2021</p>
+          </footer>
+          </div>
+      </div>
+      
+    </div>
+    
+
+  </main>
+
+   
+
+  
+  <script src="/js/index.min.575dda8d49ee02639942c63564273e6da972ab531dda26a08800bdcb477cbd7f.js" integrity="sha256-V13ajUnuAmOZQsY1ZCc&#43;balyq1Md2iagiAC9y0d8vX8=" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js"></script>
+
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"
+    data-autoloader-path="https://unpkg.com/prismjs@1.20.0/components/"></script>
+
+  
+
+
+</body>
+
+</html>

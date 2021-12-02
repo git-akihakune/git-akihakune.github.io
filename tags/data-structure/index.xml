@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>data structure on Hakune Blog Backup</title>
+    <link>https://git-akihakune.github.io/tags/data-structure/</link>
+    <description>Recent content in data structure on Hakune Blog Backup</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2021</copyright>
+    <lastBuildDate>Thu, 02 Dec 2021 22:05:00 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Leetcode journey</title>
+      <link>https://git-akihakune.github.io/blog/myleetcodejourney/</link>
+      <pubDate>Thu, 02 Dec 2021 22:05:00 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/myleetcodejourney/</guid>
+      <description>These are my submissions from Leetcode, started from knowing nothing about advanced data structures and algorithms (and still is).
+Rather than to show off my code, this article is more like a progress revision for my algo journey. Therefore, it&amp;rsquo;ll be regularly updated.
+Starting point: 14 days study plan to crack algo First day: 704. Binary Search Accepted Python code:
+class Solution: def search(self, nums: List[int], target: int) -&amp;gt; int: high = len(nums) low = 0 mid = (low + high) // 2 while low &amp;lt; high: mid = (low + high) // 2 if nums[mid] !</description>
+    </item>
+    
+  </channel>
+</rss>

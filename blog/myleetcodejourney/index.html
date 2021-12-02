@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>My Leetcode journey | Hakune Blog Backup</title>
+
+  <meta charset="UTF-8">
+  <meta name="language" content="en">
+  <meta name="description" content="My Leetcode journey from scratch">
+  <meta name="keywords" content="tech , data structure , algorithm , programming , tech , english , leetcode , competitive programming">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="My Leetcode journey" />
+  <meta name="twitter:description" content="My Leetcode journey from scratch"/>
+  <meta name="twitter:site" content="@akihakune" />
+  <meta name="twitter:creator" content="https://twitter.com/akihakune" />
+  
+
+  <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
+
+
+  
+  
+    
+ 
+  
+  
+  
+  
+  
+  
+    
+    <link type="text/css" rel="stylesheet" href="/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css" integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0="/>
+  
+    
+    <link type="text/css" rel="stylesheet" href="/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css" integrity="sha256-47DEQpj8HBSa&#43;/TImW&#43;5JCeuQeRkm5NMpJWZG3hSuFU="/>
+  
+  
+   
+   
+    
+
+<script type="application/ld+json">
+  
+    {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/git-akihakune.github.io"
+      },
+      "articleSection" : "blog",
+      "name" : "My Leetcode journey",
+      "headline" : "My Leetcode journey",
+      "description" : "My Leetcode journey from scratch",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2021",
+      "datePublished": "2021-12-02 22:05:00 \u002b0700 \u002b07",
+      "dateModified" : "2021-12-02 22:05:00 \u002b0700 \u002b07",
+      "url" : "https:\/\/git-akihakune.github.io\/blog\/myleetcodejourney\/",
+      "wordCount" : "1709",
+      "keywords" : ["tech", "data structure", "algorithm", "programming", "tech", "english", "leetcode", "competitive programming", "Blog"]
+    }
+  
+  </script>
+</head>
+
+<body>
+  <div class="burger__container">
+  <div class="burger" aria-controls="navigation" aria-label="Menu">
+    <div class="burger__meat burger__meat--1"></div>
+    <div class="burger__meat burger__meat--2"></div>
+    <div class="burger__meat burger__meat--3"></div>
+  </div>
+</div>
+ 
+
+  <nav class="nav" id="navigation">
+  <ul class="nav__list">
+    
+    
+      <li>
+        <a  href="/">about</a>
+      </li>
+    
+      <li>
+        <a  class="active"
+         href="/blog">blog</a>
+      </li>
+    
+  </ul>
+</nav>
+
+
+  <main>
+    
+    
+
+    <div class="flex-wrapper">
+      <div class="post__container">
+        <div class="post">
+          <header class="post__header">
+            <h1 id="post__title">My Leetcode journey</h1>
+            <time datetime="2021-12-02 22:05:00 &#43;0700 &#43;07" class="post__date">Dec 2 2021</time> 
+          </header>
+          <article class="post__content">
+              
+<p>These are my submissions from Leetcode, started from knowing nothing about advanced data structures and algorithms (and still is).</p>
+<p>Rather than to show off my code, this article is more like a progress revision for my algo journey. Therefore, it&rsquo;ll be regularly updated.</p>
+<h1 id="starting-point-14-days-study-plan-to-crack-algohttpsleetcodecomstudy-planalgorithm">Starting point: <a href="https://leetcode.com/study-plan/algorithm/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>14 days study plan to crack algo</a></h1>
+<h2 id="first-day-704-binary-searchhttpsleetcodecomproblemsbinary-search">First day: <a href="https://leetcode.com/problems/binary-search/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>704. Binary Search</a></h2>
+<p><img src="/img/myleetcodejourney/704_problem.png" alt=""></p>
+<p>Accepted Python code:</p>
+<pre><code class="language-python">class Solution:
+    def search(self, nums: List[int], target: int) -&gt; int:
+        high = len(nums)
+        low = 0
+        mid = (low + high) // 2
+        
+        while low &lt; high:
+            mid = (low + high) // 2
+            if nums[mid] != target and nums[mid] &lt; target:
+                low = mid + 1
+            elif nums[mid] != target and nums[mid] &gt; target:
+                high = mid
+            else:
+                return mid
+        
+        return mid if nums[mid] == target else -1
+</code></pre>
+<p>Accepted C++ code:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    int search(vector&lt;int&gt;&amp; nums, int target) {
+        int high = nums.size(), low = 0;
+        int mid = (high + low) / 2;
+        
+        while (low &lt; high) {
+            mid = (high + low) / 2;
+            if (nums[mid] &lt; target)
+                low = mid + 1;
+            else if (nums[mid] &gt; target)
+                high = mid;
+            else
+                return mid;
+        }
+        
+        return -1;
+    }
+};
+</code></pre>
+<h2 id="first-day-278-first-bad-versionhttpsleetcodecomproblemsfirst-bad-version">First day: <a href="https://leetcode.com/problems/first-bad-version/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>278. First Bad version</a></h2>
+<p><img src="/img/myleetcodejourney/278_problem.png" alt=""></p>
+<p>Accepted Python solution:</p>
+<pre><code class="language-python"># The isBadVersion API is already defined for you.
+# @param version, an integer
+# @return an integer
+# def isBadVersion(version):
+
+class Solution:
+    def firstBadVersion(self, n):
+        &quot;&quot;&quot;
+        :type n: int
+        :rtype: int
+        &quot;&quot;&quot;
+        high: int = n
+        low: int = 1
+        
+        mid: int = low + (high - low) // 2
+            
+        while low &lt; high:
+            mid = low + (high - low) // 2
+            
+            if isBadVersion(mid):
+                high = mid
+            else:
+                low = mid + 1
+        
+        return low
+</code></pre>
+<p>Accepted C++ solution:</p>
+<pre><code class="language-cpp">// The API isBadVersion is defined for you.
+// bool isBadVersion(int version);
+
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        int high = n, low = 1;
+        int mid = low + (high - low) / 2;
+        
+        while (low &lt; high) {
+            mid = low + (high - low) / 2;
+            
+            if (isBadVersion(mid))
+                high = mid;
+            else
+                low = mid + 1;
+        }
+        
+        return low;
+    }
+};
+</code></pre>
+<h2 id="first-day-35-search-insert-positionhttpsleetcodecomproblemssearch-insert-position">First day: <a href="https://leetcode.com/problems/search-insert-position/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>35. Search Insert Position</a></h2>
+<p><img src="/img/myleetcodejourney/35_problem.png" alt=""></p>
+<p>Accepted C++ solution:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    int searchInsert(vector&lt;int&gt;&amp; nums, int target) {
+        int high = nums.size(), low = 0;
+        int mid;
+        
+        while (low &lt; high) {
+            mid = low + (high - low) / 2;
+            
+            if (nums[mid] &lt; target)
+                low = mid + 1;
+            else
+                high = mid;
+        }
+        
+        return high;
+    }
+};
+</code></pre>
+<p>Another accepted C++ solution, but took 9 ms more:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    int searchInsert(vector&lt;int&gt;&amp; nums, int target) {
+        return lower_bound(nums.begin(), nums.end(), target) - nums.begin();
+    }
+};
+</code></pre>
+<p>Accepted Python solution:</p>
+<pre><code class="language-python">class Solution:
+    def searchInsert(self, nums: List[int], target: int) -&gt; int:
+        high: int = len(nums)
+        low: int = 0
+        
+        while low &lt; high:
+            mid = (low + high) // 2
+            
+            if nums[mid] &lt; target:
+                low = mid + 1
+            else:
+                high = mid
+            
+        return high
+</code></pre>
+<p>This one ran slower, while taking less space:</p>
+<pre><code class="language-python">class Solution:
+    def searchInsert(self, nums: List[int], target: int) -&gt; int:
+        return bisect_left(nums, target)
+</code></pre>
+<p>Even though they are practically the same algorithm&hellip; How could it be??</p>
+<h2 id="day-2-977-squares-of-a-sorted-arrayhttpsleetcodecomproblemssquares-of-a-sorted-array">Day 2: <a href="https://leetcode.com/problems/squares-of-a-sorted-array/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>977. Squares of a Sorted Array</a></h2>
+<p><img src="/img/myleetcodejourney/977_problem.png" alt=""></p>
+<p>Accepted Python solution:</p>
+<pre><code class="language-python">class Solution:
+    def sortedSquares(self, nums: List[int]) -&gt; List[int]:
+        # Handling edge case
+        if not len(nums) &gt; 3:
+            return sorted([i*i for i in nums])
+        
+        # Set dead end on a side
+        MAX_INTERGER_VALUE: int = 10**4
+        nums.append(MAX_INTERGER_VALUE + 1)
+        
+        # Get the position of the number
+        # that's nearest to 0
+        zeroPosition = bisect_right(nums, 0)
+        
+        left: int = zeroPosition - 1
+        right: int = zeroPosition
+        answer = []
+        
+        while left &gt;= 0 or right &lt; len(nums):   
+            if abs(nums[left]) &lt; abs(nums[right]):
+                answer.append(nums[left]**2)
+                left -= 1
+            else:
+                answer.append(nums[right]**2)
+                right += 1
+                
+            if left == -1 and right + 1 == len(nums):
+                answer.append(nums[right]**2)
+                break
+            if right == len(nums) and left == 0:
+                answer.append(nums[left]**2)
+                break
+                
+        
+        return answer[:-1]     
+</code></pre>
+<p>Another one, ran faster while taking 2KB more space:</p>
+<pre><code class="language-python">class Solution:
+    def sortedSquares(self, nums: List[int]) -&gt; List[int]:
+        return sorted([i*i for i in nums])
+</code></pre>
+<p>WHY???</p>
+<p>Here&rsquo;s my first C++ solution:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    vector&lt;int&gt; sortedSquares(vector&lt;int&gt;&amp; nums) {
+        // Get index of first positive number
+        int firstPositiveNumber = 0;
+        while (firstPositiveNumber &lt; nums.size() &amp;&amp; nums.at(firstPositiveNumber) &lt; 0) ++firstPositiveNumber;
+        
+        int negative = firstPositiveNumber - 1, positive = firstPositiveNumber;
+        vector&lt;int&gt; answer;
+        
+        while (negative &gt;= 0 &amp;&amp; positive &lt; nums.size()) {
+            if (nums.at(negative) * -1 &lt; nums.at(positive)) {
+                answer.push_back(nums.at(negative) * nums.at(negative));
+                --negative;
+            }
+            else {
+                answer.push_back(nums.at(positive) * nums.at(positive));
+                ++positive;
+            }
+        }
+        
+        while (negative &gt;= 0) {
+            answer.push_back(nums.at(negative) * nums.at(negative));
+            --negative;
+        }
+        while (positive &lt; nums.size()) {
+            answer.push_back(nums.at(positive) * nums.at(positive));
+            ++positive;
+        }
+        
+        return answer;
+    }
+};
+</code></pre>
+<p>Another C++ one:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    vector&lt;int&gt; sortedSquares(vector&lt;int&gt;&amp; nums) {
+        int left = 0, right = nums.size() - 1;
+        vector&lt;int&gt; answer(nums.size(), 0);
+        
+        for (int i = nums.size() - 1; i &gt;= 0; --i) {
+            if (abs(nums[left]) &lt; abs(nums[right])) {
+                answer.at(i) = nums[right] * nums[right];
+                right -= 1;
+            }
+            else {
+                answer[i] = nums[left] * nums[left];
+                left += 1;
+            }
+        }
+        
+        return answer;
+    }
+};
+</code></pre>
+<p>And another one, far more superior:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    vector&lt;int&gt; sortedSquares(vector&lt;int&gt;&amp; nums) {
+        transform(nums.begin(), nums.end(), nums.begin(), [](int f){return f*f;});
+        sort(nums.begin(), nums.end());
+        return nums;
+    }
+};
+</code></pre>
+<p>At this rate, I&rsquo;ve eventually given up haphazardly trust big O notation. ;-;</p>
+<h2 id="day-2-189-rotate-arrayhttpsleetcodecomproblemsrotate-array">Day 2: <a href="https://leetcode.com/problems/rotate-array/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>189. Rotate Array</a></h2>
+<p><img src="/img/myleetcodejourney/189_problem.png" alt=""></p>
+<p>Accepted Python solution:</p>
+<pre><code class="language-python">class Solution:
+    def rotate(self, nums: List[int], k: int) -&gt; None:
+        &quot;&quot;&quot;
+        Do not return anything, modify nums in-place instead.
+        &quot;&quot;&quot;
+        nums[:] = nums[-k % len(nums):] + nums[:-k % len(nums)]
+</code></pre>
+<p>Accepted C++ solution:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    void rotate(vector&lt;int&gt;&amp; nums, int k) {
+        // reverse method
+        k %= nums.size();
+        
+        reverse(nums.begin(), nums.end());
+        reverse(nums.begin(), nums.begin() + k);
+        reverse(nums.begin() + k, nums.end());
+    }
+};
+</code></pre>
+<p>It was the moment writing this article that I realized - I was supposed to use 2 pointers method! Guess let&rsquo;s just save that for later then. :D</p>
+<h2 id="day-3-283-move-zeroeshttpsleetcodecomproblemsmove-zeroes">Day 3: <a href="https://leetcode.com/problems/move-zeroes/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>283. Move Zeroes</a></h2>
+<p><img src="/img/myleetcodejourney/283_problem.png" alt=""></p>
+<p>Here are 2 different solutions, written in Python:</p>
+<pre><code class="language-python">class Solution:
+    def moveZeroes(self, nums: List[int]) -&gt; None:
+        &quot;&quot;&quot;
+        Do not return anything, modify nums in-place instead.
+        &quot;&quot;&quot;
+        lastNonZeroIndex: int = 0
+        
+        for i in nums:
+            if i:
+                nums[lastNonZeroIndex] = i
+                lastNonZeroIndex += 1
+        
+        for i in range(lastNonZeroIndex, len(nums)):
+            nums[i] = 0
+</code></pre>
+<pre><code class="language-python">class Solution:
+    def moveZeroes(self, nums: List[int]) -&gt; None:
+        &quot;&quot;&quot;
+        Do not return anything, modify nums in-place instead.
+        &quot;&quot;&quot;
+        lastNonZeroIndex: int = 0
+        
+        for i in range(len(nums)):
+            if nums[i]:
+                nums[lastNonZeroIndex], nums[i] = nums[i], nums[lastNonZeroIndex]
+                lastNonZeroIndex += 1
+</code></pre>
+<p>They are both O(n) in terms of time complexity, and O(1) in space complexity, so there&rsquo;s not much comparison thou.</p>
+<p>C++ implementation for the second solution:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    void moveZeroes(vector&lt;int&gt;&amp; nums) {
+        int lastNonZeroIndex = 0;
+        
+        for (int i = 0; i &lt; nums.size(); ++i) {
+            if (nums[i])
+                swap(nums[lastNonZeroIndex++], nums[i]);
+        }
+    }
+};
+</code></pre>
+<h2 id="day-3-167-two-sum-ii---input-array-is-sortedhttpsleetcodecomproblemstwo-sum-ii-input-array-is-sorted">Day 3: <a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>167. Two Sum II - Input Array is Sorted</a></h2>
+<p><img src="/img/myleetcodejourney/167_problem.png" alt=""></p>
+<p>This bruteforce solution got <code>Time Limit Exceeded</code>:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; numbers, int target) {
+        vector&lt;int&gt; ans;
+        
+        for (int i = 0; i + 1 &lt; numbers.size(); ++i) {
+            int left = i, right = numbers.size() - 1;
+            while (left &lt; right &amp;&amp;\
+                   numbers.at(left) + numbers.at(right) &gt;= target) {
+                if (numbers.at(left) + numbers.at(right) == target) {
+                    ans.insert(ans.end(), {left + 1, right + 1});
+                    return ans;
+                }
+                --right;
+            }
+        }
+        
+        return ans;
+    }
+};
+</code></pre>
+<p>Accepted C++ solution:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; numbers, int target) {
+        int left = 0, right = numbers.size() - 1;
+        vector&lt;int&gt; ans;
+        
+        while (left &lt; right) {
+            int currentSum = numbers.at(left) + numbers.at(right);
+            
+            if (currentSum == target) {
+                ans.insert(ans.end(), {left + 1, right + 1});
+                break;
+            }
+            else if (currentSum &gt; target) {
+                --right;
+            }
+            else {
+                ++left;
+            }
+        }
+        
+        return ans;
+    }
+};
+</code></pre>
+<p>Python line-to-line convertion of that exact piece of code:</p>
+<pre><code class="language-python">class Solution:
+    def twoSum(self, numbers: List[int], target: int) -&gt; List[int]:
+        left, right = 0, len(numbers) - 1
+        answer: List[int] = []
+        
+        while left &lt; right:
+            currentSum: int = numbers[left] + numbers[right]
+                
+            if currentSum == target:
+                answer.extend([left + 1, right + 1])
+                break
+            elif currentSum &gt; target:
+                right -= 1
+            else:
+                left += 1
+        
+        return answer
+</code></pre>
+<h1 id="daily-coding-problems">Daily coding problems</h1>
+<h2 id="december-2nd-328-odd-even-linked-listhttpsleetcodecomproblemsodd-even-linked-list">December 2nd: <a href="https://leetcode.com/problems/odd-even-linked-list" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>328. Odd Even Linked List</a></h2>
+<p><img src="/img/myleetcodejourney/328_problem.png" alt=""></p>
+<p>Accepted Python solution:</p>
+<pre><code class="language-python"># Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def move2Nodes(self, node: ListNode) -&gt; ListNode:
+        node.next = node.next.next
+        return node.next
+    
+    def oddEvenList(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        if head == None:
+            return head
+        
+        oddNode: ListNode = head
+        evenNode: ListNode = head.next
+            
+        firstEvenElement: ListNode = evenNode
+            
+        while evenNode != None and evenNode.next != None:
+            oddNode = self.move2Nodes(oddNode)
+            evenNode = self.move2Nodes(evenNode)
+            
+        oddNode.next = firstEvenElement
+        
+        return head
+</code></pre>
+<p>Accepted C++ solution:</p>
+<pre><code class="language-cpp">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void movePointer2Nodes(ListNode*&amp; pointer) {
+        pointer -&gt; next = pointer -&gt; next -&gt; next;
+        pointer = pointer -&gt; next;
+    }
+    
+    ListNode* oddEvenList(ListNode* head) {
+        if (head == NULL) {
+            return head;
+        }
+        
+        ListNode *oddPointer = head, *evenPointer = head -&gt; next;
+        ListNode *firstEvenElement = evenPointer;
+        
+        // Intuition: Use 2 pointers,
+        // iterate them by 2 nodes in turn,
+        // then link the last element of odd to 
+        // the first element of even
+        
+        while (evenPointer != NULL &amp;&amp; evenPointer -&gt; next != NULL) {
+            movePointer2Nodes(oddPointer);
+            movePointer2Nodes(evenPointer);
+        }
+        
+        oddPointer -&gt; next = firstEvenElement;
+        
+        return head;
+    }
+};
+</code></pre>
+<p>However, this one got <code>Runtime Error</code>:</p>
+<pre><code class="language-cpp">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void movePointer2Nodes(ListNode*&amp; pointer) {
+        pointer -&gt; next = pointer -&gt; next -&gt; next;
+        pointer = pointer -&gt; next;
+    }
+    
+    ListNode* oddEvenList(ListNode* head) {
+        ListNode *oddPointer = head, *evenPointer = head -&gt; next;
+        ListNode *firstEvenElement = evenPointer;
+        
+        // Intuition: Use 2 pointers,
+        // iterate them by 2 nodes in turn,
+        // then link the last element of odd to 
+        // the first element of even
+        
+        while (evenPointer != NULL &amp;&amp; evenPointer -&gt; next != NULL) {
+            movePointer2Nodes(oddPointer);
+            movePointer2Nodes(evenPointer);
+        }
+        
+        oddPointer -&gt; next = firstEvenElement;
+        
+        return head;
+    }
+};
+</code></pre>
+<p>without comparing it with the above accepted code, can you figure out where&rsquo;s the flaw? :D</p>
+
+
+              
+          </article>
+          
+
+<ul class="tags__list">
+    
+    
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/algorithm/">algorithm</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/programming/">programming</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/tech/">tech</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/english/">english</a>
+    </li></ul>
+
+ <div class="pagination">
+  
+    <a class="pagination__item" href="https://git-akihakune.github.io/blog/adventofcyber3/">
+        <span class="pagination__label">Previous Post</span>
+        <span class="pagination__title">Advent Of Cyber 3 Writeup</span>
+    </a>
+  
+
+  
+</div>
+
+          
+          <footer class="post__footer">
+            
+
+
+<div class="social-icons">
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="Twitter"
+        href="https://twitter.com/akihakune"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/twitter.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="GitHub"
+        href="https://github.com/git-akihakune"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/github.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="Email"
+        href="mailto:akihakune@gmail.com"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/email.svg')"></div>
+      </a>
+    
+     
+</div>
+
+            <p>© 2021</p>
+          </footer>
+          </div>
+      </div>
+      
+      <div class="toc-container">
+           <div class="toc-post-title">My Leetcode journey</div> 
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#first-day-704-binary-searchhttpsleetcodecomproblemsbinary-search">First day: <a href="https://leetcode.com/problems/binary-search/">704. Binary Search</a></a></li>
+    <li><a href="#first-day-278-first-bad-versionhttpsleetcodecomproblemsfirst-bad-version">First day: <a href="https://leetcode.com/problems/first-bad-version/">278. First Bad version</a></a></li>
+    <li><a href="#first-day-35-search-insert-positionhttpsleetcodecomproblemssearch-insert-position">First day: <a href="https://leetcode.com/problems/search-insert-position/">35. Search Insert Position</a></a></li>
+    <li><a href="#day-2-977-squares-of-a-sorted-arrayhttpsleetcodecomproblemssquares-of-a-sorted-array">Day 2: <a href="https://leetcode.com/problems/squares-of-a-sorted-array/">977. Squares of a Sorted Array</a></a></li>
+    <li><a href="#day-2-189-rotate-arrayhttpsleetcodecomproblemsrotate-array">Day 2: <a href="https://leetcode.com/problems/rotate-array/">189. Rotate Array</a></a></li>
+    <li><a href="#day-3-283-move-zeroeshttpsleetcodecomproblemsmove-zeroes">Day 3: <a href="https://leetcode.com/problems/move-zeroes/">283. Move Zeroes</a></a></li>
+    <li><a href="#day-3-167-two-sum-ii---input-array-is-sortedhttpsleetcodecomproblemstwo-sum-ii-input-array-is-sorted">Day 3: <a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/">167. Two Sum II - Input Array is Sorted</a></a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#december-2nd-328-odd-even-linked-listhttpsleetcodecomproblemsodd-even-linked-list">December 2nd: <a href="https://leetcode.com/problems/odd-even-linked-list">328. Odd Even Linked List</a></a></li>
+  </ul>
+</nav>
+      </div>
+      
+    </div>
+    
+
+  </main>
+
+   
+
+  
+  <script src="/js/index.min.575dda8d49ee02639942c63564273e6da972ab531dda26a08800bdcb477cbd7f.js" integrity="sha256-V13ajUnuAmOZQsY1ZCc&#43;balyq1Md2iagiAC9y0d8vX8=" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js"></script>
+
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"
+    data-autoloader-path="https://unpkg.com/prismjs@1.20.0/components/"></script>
+
+  
+    <script src="/js/table-of-contents.js"></script>
+  
+
+
+</body>
+
+</html>

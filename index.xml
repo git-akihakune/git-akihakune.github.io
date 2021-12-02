@@ -7,7 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2021</copyright>
-    <lastBuildDate>Thu, 02 Dec 2021 07:36:50 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 02 Dec 2021 22:05:00 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Leetcode journey</title>
+      <link>https://git-akihakune.github.io/blog/myleetcodejourney/</link>
+      <pubDate>Thu, 02 Dec 2021 22:05:00 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/myleetcodejourney/</guid>
+      <description>These are my submissions from Leetcode, started from knowing nothing about advanced data structures and algorithms (and still is).
+Rather than to show off my code, this article is more like a progress revision for my algo journey. Therefore, it&amp;rsquo;ll be regularly updated.
+Starting point: 14 days study plan to crack algo First day: 704. Binary Search Accepted Python code:
+class Solution: def search(self, nums: List[int], target: int) -&amp;gt; int: high = len(nums) low = 0 mid = (low + high) // 2 while low &amp;lt; high: mid = (low + high) // 2 if nums[mid] !</description>
+    </item>
+    
     <item>
       <title>Advent Of Cyber 3 Writeup</title>
       <link>https://git-akihakune.github.io/blog/adventofcyber3/</link>
@@ -17,7 +29,7 @@
       <description>Author: Aki Hakune Started writing on December 2nd 2021.
  Before reading this article, I strongly suggest you take your time and try the challenges out yourself, it will definitely worth your time!
 Since Try Hack Me has done an awesome job in explaining things plain and simple, I won&amp;rsquo;t repeat again their tutorial. Instead, I&amp;rsquo;ll try to summarize it in the most concise (but understandable) way I can.
-[Day 1] Web Exploitation Save The Gifts So, today&amp;rsquo;s learning objective seems to be IDOR vulnerability, which stands for Insecure Direct Object Reference.</description>
+[Day 1] Web Exploitation: Save The Gifts So, today&amp;rsquo;s learning objective seems to be IDOR vulnerability, which stands for Insecure Direct Object Reference.</description>
     </item>
     
     <item>

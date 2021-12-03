@@ -68,7 +68,7 @@
       "datePublished": "2021-12-02 22:05:00 \u002b0700 \u002b07",
       "dateModified" : "2021-12-02 22:05:00 \u002b0700 \u002b07",
       "url" : "https:\/\/git-akihakune.github.io\/blog\/myleetcodejourney\/",
-      "wordCount" : "1709",
+      "wordCount" : "1864",
       "keywords" : ["tech", "data structure", "algorithm", "programming", "tech", "english", "leetcode", "competitive programming", "Blog"]
     }
   
@@ -537,6 +537,56 @@ public:
         
         return answer
 </code></pre>
+<h2 id="day-4-344-reverse-stringhttpsleetcodecomproblemsreverse-string">Day 4: <a href="https://leetcode.com/problems/reverse-string/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>344. Reverse String</a></h2>
+<p><img src="/img/myleetcodejourney/344_problem.png" alt=""></p>
+<p>Nothing much, just swap them in-place, and there&rsquo;re built-in functions for that. Here&rsquo;s C++ solution:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    void reverseString(vector&lt;char&gt;&amp; s) {
+        reverse(s.begin(), s.end());
+    }
+};
+</code></pre>
+<p>And Python implementation:</p>
+<pre><code class="language-python">class Solution:
+    def reverseString(self, s: List[str]) -&gt; None:
+        &quot;&quot;&quot;
+        Do not return anything, modify s in-place instead.
+        &quot;&quot;&quot;
+        s.reverse()
+</code></pre>
+<h2 id="day-4-557-reverse-words-in-a-string-iiihttpsleetcodecomproblemsreverse-words-in-a-string-iii">Day 4: <a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>557. Reverse Words in a String III</a></h2>
+<p><img src="/img/myleetcodejourney/557_problem.png" alt=""></p>
+<p>Still nothing much. Let&rsquo;s just split it out and reverse it.</p>
+<p>C++ accepted solution:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    string reverseWords(string s) {
+        int lastChar = 0;
+        string answer = s + &quot; &quot;;
+        for (int wordcount = 0; wordcount &lt; answer.size(); ++wordcount) {
+            if (answer[wordcount] == ' ') {
+                int left = lastChar, right = wordcount;
+                lastChar = wordcount + 1;
+                reverse(answer.begin() + left, answer.begin() + right);
+            }
+        }
+        answer.pop_back();
+        return answer;
+    }
+};
+</code></pre>
+<p>Accepted Python solution:</p>
+<pre><code class="language-python">class Solution:
+    def reverseWords(self, s: str) -&gt; str:
+        return &quot; &quot;.join([word[::-1] for word in s.split()])
+</code></pre>
 <h1 id="daily-coding-problems">Daily coding problems</h1>
 <h2 id="december-2nd-328-odd-even-linked-listhttpsleetcodecomproblemsodd-even-linked-list">December 2nd: <a href="https://leetcode.com/problems/odd-even-linked-list" 
   
@@ -749,6 +799,8 @@ public:
     <li><a href="#day-2-189-rotate-arrayhttpsleetcodecomproblemsrotate-array">Day 2: <a href="https://leetcode.com/problems/rotate-array/">189. Rotate Array</a></a></li>
     <li><a href="#day-3-283-move-zeroeshttpsleetcodecomproblemsmove-zeroes">Day 3: <a href="https://leetcode.com/problems/move-zeroes/">283. Move Zeroes</a></a></li>
     <li><a href="#day-3-167-two-sum-ii---input-array-is-sortedhttpsleetcodecomproblemstwo-sum-ii-input-array-is-sorted">Day 3: <a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/">167. Two Sum II - Input Array is Sorted</a></a></li>
+    <li><a href="#day-4-344-reverse-stringhttpsleetcodecomproblemsreverse-string">Day 4: <a href="https://leetcode.com/problems/reverse-string/">344. Reverse String</a></a></li>
+    <li><a href="#day-4-557-reverse-words-in-a-string-iiihttpsleetcodecomproblemsreverse-words-in-a-string-iii">Day 4: <a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/">557. Reverse Words in a String III</a></a></li>
   </ul>
 
   <ul>

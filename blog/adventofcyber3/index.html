@@ -2,12 +2,12 @@
 <html lang="en-us">
 
 <head>
-  <title>Advent Of Cyber 3 Writeup | Hakune Blog Backup</title>
+  <title>Advent Of Cyber 3 Writeup | Hakune Blog</title>
 
   <meta charset="UTF-8">
   <meta name="language" content="en">
   <meta name="description" content="Writeup for 2021 Try Hack Me&#39;s Advent of Cyber 3">
-  <meta name="keywords" content="">
+  <meta name="keywords" content="ctf , tech , try hack me , penetration testing , advent of cyber">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -68,8 +68,8 @@
       "datePublished": "2021-12-02 07:36:50 \u002b0700 \u002b07",
       "dateModified" : "2021-12-02 07:36:50 \u002b0700 \u002b07",
       "url" : "https:\/\/git-akihakune.github.io\/blog\/adventofcyber3\/",
-      "wordCount" : "471",
-      "keywords" : ["Blog"]
+      "wordCount" : "982",
+      "keywords" : ["ctf", "tech", "try hack me", "penetration testing", "advent of cyber", "Blog"]
     }
   
   </script>
@@ -194,7 +194,81 @@ Build Manager</p>
 Mischief Manager</p>
 <p><code>What is the received flag when McSkidy fixes the Inventory Management System?</code>
 THM{AOC_IDOR_2B34BHI3}</p>
-<p>See you again in tomorrow&rsquo;s challenge! xD</p>
+<h2 id="day-2-web-exploitation-elf-hr-problems">[Day 2] <code>Web Exploitation</code>: Elf HR Problems<a class="anchor" href="#day-2-web-exploitation-elf-hr-problems">#</a></h2>
+<p><img src="/img/adventOfCyber3/day2/title.png" alt=""></p>
+<p>So in short, today&rsquo;s learning objective is fundamental knowledge about the WWW. You can skip all the text below and jump right to answers if you&rsquo;ve already had experience working with the web.</p>
+<p>Since this is actually a vast topic, I&rsquo;ll try keeping things simple by omitting the details. If you want to learn more in-depth about web technologies (which you should, because it&rsquo;s like Hello World for pentesters and developers alike), I suggest the great <a href="https://developer.mozilla.org/en-US/docs/Learn" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>Mozilla Docs</a>, where they&rsquo;ve explained everything with great details.</p>
+<p>First things first, HTTP.</p>
+<p>You are reading this article, on the Internet, from your browser, aren&rsquo;t you?</p>
+<p>Then I hope you&rsquo;re using a computer. Press Ctr+U, or right click and <code>View Page Source</code>, you should see something like this:
+<img src="/img/adventOfCyber3/day2/thm_html.png" alt=""></p>
+<p>As you can see, this is the true nature of the Web - Hypertext. A bunch of codes define what a page contain, how does it look, what will it do, and so on.</p>
+<p>When people talk about HTTP, they&rsquo;re talking about the way in which such Hypertext are transferred among computers - sending request, and waiting to be responded (imagine you messaging with someone). An example request:</p>
+<pre><code class="language-http">GET / HTTP/1.1
+Host: tryhackme.com
+User-Agent: Mozilla/5.0 Firefox/87.0
+Referer: https://tryhackme.com/
+</code></pre>
+<p>And an example respond:</p>
+<pre><code class="language-http">HTTP/1.1 200 OK
+Server: nginx/1.15.8
+Date: Wednesday, 24 Nov 2021 13:34:03 GMT
+Content-Type: text/html
+Content-Length: 98
+
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Advent of Cyber&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    Welcome To Advent of Cyber!
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>As you can see, Hypertext is also in the respond. The browser render that, then showing you the page - all happened in the matter of miliseconds.</p>
+<p>HTTPS is HTTP, but more secure, since it&rsquo;s encrypted.</p>
+<p>On the other hand, cookie is a something sent back and forth among computers, to identify who you are.</p>
+<p>On your browser, press <code>F12</code> to open Dev Tools, find <code>Cookies</code> tab, somewhere in <code>Storage</code> or <code>Application</code>. The yummy cookies should be there. And since cookies are stored locally on your computer, it can be changed however we want.</p>
+<p>Equipped with all that knowledge, here comes the challenge!</p>
+<p>Get into the <a href="https://static-labs.tryhackme.cloud/sites/aoc-cookies/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>challenge page</a>, we see an ordinary login form.</p>
+<p><img src="/img/adventOfCyber3/day2/best_festival_company_login.png" alt=""></p>
+<p>Let&rsquo;s register an account!</p>
+<p><img src="/img/adventOfCyber3/day2/best_festival_register.png" alt=""></p>
+<p>&hellip; okay? ('-')</p>
+<p>Checking DevTool, we can find a cookie like this</p>
+<pre><code class="language-http">user-auth:&quot;7b636f6d70616e793a2022546865204265737420466573746976616c20436f6d70616e79222c206973726567697374657265643a2254727565222c20757365726e616d653a22746573746572227d&quot;
+</code></pre>
+<p>It&rsquo;s not very readable. So let&rsquo;s try to decode it with <a href="https://gchq.github.io/CyberChef/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>CyberChef</a>.</p>
+<p><img src="/img/adventOfCyber3/day2/cookie_cyberchef.png" alt=""></p>
+<p>(If you find the image too small to read, why don&rsquo;t open up another tab and decode it? :D)</p>
+<p>We can see that the cookie is stored in <code>JSON</code> format, encoded in hexadecimal.</p>
+<p>Changing out username to <code>admin</code> (as the task told us to), then copy-pasting it to DevTool&hellip;</p>
+<p><img src="/img/adventOfCyber3/day2/best_festival_dashboard.png" alt=""></p>
+<p>This is certified &ldquo;I&rsquo;m in&rdquo; moment. :D</p>
+<p>From there, we can get all needed information to answer the questions:</p>
+<p><code>What is the name of the new cookie that was created for your account?</code></p>
+<p>user-auth</p>
+<p><code>What encoding type was used for the cookie value?</code></p>
+<p>hexadecimal</p>
+<p><code>What object format is the data of the cookie stored in?</code></p>
+<p>json</p>
+<p><code>What is the value of the administrator cookie? (username = admin)</code></p>
+<pre><code>7b636f6d70616e793a2022546865204265737420466573746976616c20436f6d70616e79222c206973726567697374657265643a2254727565222c20757365726e616d653a2261646d696e227d
+</code></pre>
+<p><code>What team environment is not responding?</code></p>
+<p>HR</p>
+<p><code>What team environment has a network warning?</code></p>
+<p>Application</p>
+<p><img src="/img/adventOfCyber3/day2/answers.png" alt=""></p>
 
 
               
@@ -282,6 +356,21 @@ THM{AOC_IDOR_2B34BHI3}</p>
           </div>
       </div>
       
+      <div class="toc-container">
+           <div class="toc-post-title">Advent Of Cyber 3 Writeup</div> 
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#day-1-web-exploitation-save-the-gifts">[Day 1] <code>Web Exploitation</code>: Save The Gifts</a></li>
+    <li><a href="#day-2-web-exploitation-elf-hr-problems">[Day 2] <code>Web Exploitation</code>: Elf HR Problems</a></li>
+  </ul>
+</nav>
+      </div>
+      
     </div>
     
 
@@ -299,6 +388,8 @@ THM{AOC_IDOR_2B34BHI3}</p>
   <script src="https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"
     data-autoloader-path="https://unpkg.com/prismjs@1.20.0/components/"></script>
 
+  
+    <script src="/js/table-of-contents.js"></script>
   
 
 

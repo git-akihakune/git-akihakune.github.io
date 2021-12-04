@@ -68,7 +68,7 @@
       "datePublished": "2021-12-02 07:36:50 \u002b0700 \u002b07",
       "dateModified" : "2021-12-02 07:36:50 \u002b0700 \u002b07",
       "url" : "https:\/\/git-akihakune.github.io\/blog\/adventofcyber3\/",
-      "wordCount" : "982",
+      "wordCount" : "1277",
       "keywords" : ["ctf", "tech", "try hack me", "penetration testing", "advent of cyber", "Blog"]
     }
   
@@ -244,7 +244,7 @@ Content-Length: 98
 <p>On the other hand, cookie is a something sent back and forth among computers, to identify who you are.</p>
 <p>On your browser, press <code>F12</code> to open Dev Tools, find <code>Cookies</code> tab, somewhere in <code>Storage</code> or <code>Application</code>. The yummy cookies should be there. And since cookies are stored locally on your computer, it can be changed however we want.</p>
 <p>Equipped with all that knowledge, here comes the challenge!</p>
-<p>Get into the <a href="https://static-labs.tryhackme.cloud/sites/aoc-cookies/" 
+<p>Get into the <a href="https:///img/adventOfCyber3/day3-labs.tryhackme.cloud/sites/aoc-cookies/" 
   
    target="_blank" rel="noreferrer noopener" 
 >challenge page</a>, we see an ordinary login form.</p>
@@ -280,6 +280,49 @@ Content-Length: 98
 <p><code>What team environment has a network warning?</code></p>
 <p>Application</p>
 <p><img src="/img/adventOfCyber3/day2/answers.png" alt=""></p>
+<h2 id="day-3-web-exploitation-christmas-blackout">[Day 3] <code>Web Exploitation</code>: Christmas Blackout<a class="anchor" href="#day-3-web-exploitation-christmas-blackout">#</a></h2>
+<p><img src="/img/adventOfCyber3/day3/title.png" alt=""></p>
+<p>Okay, long story short, content discovery and authentication bypass. Absolutely useful in real life applications.</p>
+<p>There&rsquo;s not much to say about this, since everything we&rsquo;re gonna do is bruteforcing the credentials. One reminder, thou, is that in real life bruteforcing is nowhere near as effective as it&rsquo;s in ctfs, and let&rsquo;s be grateful for that. :D</p>
+<p><img src="/img/adventOfCyber3/day3/gobuster.gif" alt=""></p>
+<p>And just like that, we&rsquo;ve got the location of admin panel.</p>
+<p>From here, we usually use specialised tools like <a href="https://github.com/vanhauser-thc/thc-hydra" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>Hydra</a>. However we&rsquo;ve already been given a wordlist with only 3 entries in this case, which&rsquo;s saved us from the hassle of writing lengthy commands. :D</p>
+<p>Manually test the entries, we got it at <code>administrator:administrator</code>.</p>
+<p><img src="/img/adventOfCyber3/day3/admin_login.png" alt=""></p>
+<p>Another way to do that is taking a look at <a href="http://10.10.235.89/admin/login-page.js" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>the JS file</a>.</p>
+<pre><code class="language-javascript">const loginForm = document.getElementById(&quot;login-form&quot;);
+const loginButton = document.getElementById(&quot;login-form-submit&quot;);
+const loginErrorMsg = document.getElementById(&quot;login-error-msg&quot;);
+
+loginButton.addEventListener(&quot;click&quot;, (e) =&gt; {
+    e.preventDefault();
+    const username = loginForm.username.value;
+    const password = loginForm.password.value;
+
+    if (username === &quot;administrator&quot; &amp;&amp; password === &quot;administrator&quot;) {
+        alert(&quot;You have successfully logged in.&quot;);
+        window.open('dc7161be3dbf2250c8954e5.html');
+    } else {
+        loginErrorMsg.style.opacity = 1;
+    }
+})
+</code></pre>
+<p>We can clearly see username and password written in plaintext, and even the &ldquo;secret&rdquo; location it&rsquo;ll redirect us to. Again, in real life, no sane developer do this. However, let&rsquo;s just be chill in this ctf-only &ldquo;I&rsquo;m in&rdquo; moment and move on! xD</p>
+<p><img src="/img/adventOfCyber3/day3/admin_dashboard.png" alt=""></p>
+<p>Having accessed to the admin panel, now we&rsquo;ve got all flags needed for the questions!</p>
+<p><code>Using a common wordlist for discovering content, enumerate http://10.10.235.89 to find the location of the administrator dashboard. What is the name of the folder?</code>
+admin</p>
+<p><code>In your web browser, try some default credentials on the newly discovered login form for the &quot;administrator&quot; user. What is the password?</code>
+administrator</p>
+<p><code>Access the admin panel. What is the value of the flag?</code>
+THM{ADM1N_AC3SS}</p>
+<p><img src="/img/adventOfCyber3/day3/answers.png" alt=""></p>
 
 
               
@@ -378,6 +421,7 @@ Content-Length: 98
     </li>
     <li><a href="#day-1-web-exploitation-save-the-gifts">[Day 1] <code>Web Exploitation</code>: Save The Gifts</a></li>
     <li><a href="#day-2-web-exploitation-elf-hr-problems">[Day 2] <code>Web Exploitation</code>: Elf HR Problems</a></li>
+    <li><a href="#day-3-web-exploitation-christmas-blackout">[Day 3] <code>Web Exploitation</code>: Christmas Blackout</a></li>
   </ul>
 </nav>
       </div>

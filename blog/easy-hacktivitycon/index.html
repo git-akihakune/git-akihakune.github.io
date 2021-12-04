@@ -130,16 +130,16 @@ if (!doNotTrack) {
 <p>Started writing on September 18th 2021.</p>
 <hr>
 <h2 id="warmups---tsunami">Warmups - Tsunami<a class="anchor" href="#warmups---tsunami">#</a></h2>
-<p><img src="/img/hacktivitycon_tsunami.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_tsunami.png" alt=""></p>
 <p>Downloading the file and running <code>file</code> command, we get its file type - an audio file.</p>
-<p><img src="/img/hacktivitycon_tsunami_filetype.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_tsunami_filetype.png" alt=""></p>
 <p>Let&rsquo;s think simple, and straight up open it in an audio editor - here I choose the open-source Audacity.</p>
-<p><img src="/img/hacktivitycon_tsunami_writeup.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_tsunami_writeup.png" alt=""></p>
 <p>And that&rsquo;s it, we got the flag!</p>
 <h2 id="warmups---pimple">Warmups - Pimple<a class="anchor" href="#warmups---pimple">#</a></h2>
-<p><img src="/img/hacktivitycon_pimple.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_pimple.png" alt=""></p>
 <p>Follow the exact same procedure as Tsunami, we have:</p>
-<p><img src="/img/hacktivitycon_pimple_filetype.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_pimple_filetype.png" alt=""></p>
 <p>Okay so what&rsquo;s a GIMP XCF image? A quick Google search led me to <a href="https://askubuntu.com/questions/460107/how-to-convert-an-xcf-file-image-to-jpeg-or-png" 
   
    target="_blank" rel="noreferrer noopener" 
@@ -155,30 +155,30 @@ if (!doNotTrack) {
 >online converter</a> but it did not seems to work&hellip;</p>
 <p>So let&rsquo;s check GIMP package size, power off our attack machine, take a snapshot, then power it on again and <code>sudo apt install gimp</code>.</p>
 <p>Renaming the file to <code>pimple.xcf</code> and open it in GIMP, we got the flag.</p>
-<p><img src="/img/hacktivitycon_pimple_writeup.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_pimple_writeup.png" alt=""></p>
 <p>&hellip; Those morose eyes were exactly like mine when I worked on some challenges.</p>
 <h2 id="warmups---bass64">Warmups - Bass64<a class="anchor" href="#warmups---bass64">#</a></h2>
-<p><img src="/img/hacktivitycon_bass64.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_bass64.png" alt=""></p>
 <p>Oh, once again, hello John.
 <br/></p>
 <p>This challenge here is pretty straight-forward. Download the file, open it, then resize our editor window to a suitable dimension, we have</p>
-<p><img src="/img/hacktivitycon_bass64_writeup.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_bass64_writeup.png" alt=""></p>
 <p>Directly <a href="https://www.base64decode.org/" 
   
    target="_blank" rel="noreferrer noopener" 
 >base64 decoding it</a>, we instantly got the flag.</p>
 <h2 id="warmups---read-the-rules">Warmups - Read The Rules<a class="anchor" href="#warmups---read-the-rules">#</a></h2>
-<p><img src="/img/hacktivitycon_read_the_rules.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_read_the_rules.png" alt=""></p>
 <p>As they said, please be a civilized player and <a href="https://ctf.hacktivitycon.com/rules" 
   
    target="_blank" rel="noreferrer noopener" 
 >read the rules</a>. The flag&rsquo;s in the source code.</p>
 <h2 id="warmups---2ez">Warmups - 2EZ<a class="anchor" href="#warmups---2ez">#</a></h2>
-<p><img src="/img/hacktivitycon_2ez.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_2ez.png" alt=""></p>
 <p>Another challenge from John. Let&rsquo;s follow our procedure from previous challenges.</p>
-<p><img src="/img/hacktivitycon_2ez_filetype.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_2ez_filetype.png" alt=""></p>
 <p>Seems like our <code>file</code> command did not have much use here. Let&rsquo;s try <code>strings</code>.</p>
-<p><img src="/img/hacktivitycon_2ez_strings.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_2ez_strings.png" alt=""></p>
 <p><code>JFIF</code>&hellip; so it should be an <a href="https://fileinfo.com/extension/jfif" 
   
    target="_blank" rel="noreferrer noopener" 
@@ -190,29 +190,29 @@ if (!doNotTrack) {
    target="_blank" rel="noreferrer noopener" 
 >its file signature</a> must be wrong.</p>
 <p>Open it up in a hex editor, we can clearly see our guess was right.</p>
-<p><img src="/img/hacktivitycon_2ez_hexedit.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_2ez_hexedit.png" alt=""></p>
 <p>So we change the first 4 bytes <a href="https://www.filesignatures.net/index.php?page=search&amp;search=JFIF&amp;mode=EXT" 
   
    target="_blank" rel="noreferrer noopener" 
 >accordingly to JFIF file signature</a> and we got the flag!</p>
 <h2 id="web---swaggy">Web - Swaggy<a class="anchor" href="#web---swaggy">#</a></h2>
-<p><img src="/img/hacktivitycon_swaggy.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_swaggy.png" alt=""></p>
 <p>Following the url, we got to a pretty clean website.</p>
-<p><img src="/img/hacktivitycon_swaggy_site.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_swaggy_site.png" alt=""></p>
 <p>Messing around a bit, we knew that this site use the GUI to make <code>curl</code> GET request to an API endpoint. <code>Execute</code> sent a HTTP GET request to the endpoint, but it required basic authentication, encoded in base64. I tried with &lsquo;user:password&rsquo; but it returned 403: <code>Invalid credentials</code>.
 <br/></p>
 <p>So, I tried another default creadential - &lsquo;admin:admin&rsquo;. And to my surprise - it returned the flag quite easily.
-<img src="/img/hacktivitycon_swaggy_writeup.png" alt=""></p>
+<img src="/img/hacktivitycon/hacktivitycon_swaggy_writeup.png" alt=""></p>
 <h2 id="web---titanic">Web - Titanic<a class="anchor" href="#web---titanic">#</a></h2>
-<p><img src="/img/hacktivitycon_titanic.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_titanic.png" alt=""></p>
 <p>Following the url, we got to a website with pretty decent UI. On a side note, you should really press that <a href="https://youtu.be/dQw4w9WgXcQ" 
   
    target="_blank" rel="noreferrer noopener" 
 >&lsquo;Watch Video&rsquo; button</a>, quite informative.</p>
 <p>Right at the top of nav bar, we got the admin panel.</p>
-<p><img src="/img/hacktivitycon_titanic_admin.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_titanic_admin.png" alt=""></p>
 <p>I tried some common credentials, as well as checking the source code and requests, but nothing particularly interesting found, except that it used GET for authentication, which&rsquo;s specially unrecommendable. So I returned to the home page and it led me to another engrossing service.</p>
-<p><img src="/img/hacktivitycon_titanic_urlcapturer.png" alt="">
+<p><img src="/img/hacktivitycon/hacktivitycon_titanic_urlcapturer.png" alt="">
 <br/></p>
 <p>I tried with <a href="https://google.com" 
   
@@ -229,19 +229,19 @@ if (!doNotTrack) {
   
    target="_blank" rel="noreferrer noopener" 
 >Apache servers have a default server-status site</a> which can be useful for log checking.</p>
-<p><img src="/img/hacktivitycon_titanic_log.png" alt="">
+<p><img src="/img/hacktivitycon/hacktivitycon_titanic_log.png" alt="">
 <br/></p>
 <p>And it actually did! Based on the requests' parameters, we got an user&rsquo;s credential. Logging in that account, we got the flag.</p>
 <h2 id="web---confidentiality">Web - Confidentiality<a class="anchor" href="#web---confidentiality">#</a></h2>
-<p><img src="/img/hacktivitycon_confidentiality.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_confidentiality.png" alt=""></p>
 <p>Another John Hammond&rsquo;s challenge it seems.</p>
-<p><img src="/img/hacktivitycon_confidentiality_site.png" alt="">
+<p><img src="/img/hacktivitycon/hacktivitycon_confidentiality_site.png" alt="">
 <br/></p>
 <p>So I just followed the placeholder and it gave me something that looks like a <code>ls -l</code> result.</p>
-<p><img src="/img/hacktivitycon_confidentiality_host.png" alt="">
+<p><img src="/img/hacktivitycon/hacktivitycon_confidentiality_host.png" alt="">
 <br/></p>
 <p>Looks like this site just run whatever command we want in a bash, provided that it starts with <code>ls -l</code>. So here comes the payload.</p>
-<p><img src="/img/hacktivitycon_confidentiality_writeup.png" alt=""></p>
+<p><img src="/img/hacktivitycon/hacktivitycon_confidentiality_writeup.png" alt=""></p>
 <p>And that&rsquo;s it, we got the flag. You can also <a href="https://stackoverflow.com/questions/6152659/bash-sh-difference-between-and#" 
   
    target="_blank" rel="noreferrer noopener" 

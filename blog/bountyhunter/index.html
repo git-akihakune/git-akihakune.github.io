@@ -158,11 +158,11 @@ Nmap done: 1 IP address (1 host up) scanned in 108.32 seconds
 <li>Checking the service versions, seems like they&rsquo;re relatively new (at the time of writing) and there&rsquo;s no publicly available vulnerability or exploit for them.</li>
 <li>Manually open it in a web browser, there&rsquo;s also nothing much there, except this &ldquo;portal&rdquo; page</li>
 </ul>
-<p><img src="/img/bountyhunter_portal.png" alt=""></p>
+<p><img src="/img/bountyhunter/bountyhunter_portal.png" alt=""></p>
 <ul>
 <li>Follow the link, we get to a simple page for submitting exploits:</li>
 </ul>
-<p><img src="/img/bountyhunter_log_submit.png" alt=""></p>
+<p><img src="/img/bountyhunter/bountyhunter_log_submit.png" alt=""></p>
 <ul>
 <li>Checking the source code a bit, we find out that this form create a POST request to &ldquo;tracker_diRbPr00f314.php&rdquo;</li>
 </ul>
@@ -199,7 +199,7 @@ async function bountySubmit() {
 <li>Fire up Burp Suite and looking at POST requests, as expected, I saw an encoded string in the <code>data</code> variable of every POST request</li>
 <li>&ldquo;It must contain the XML&rdquo;, I thought. So I tried to decode it</li>
 </ul>
-<p><img src="/img/bountyhunter_request.png" alt=""></p>
+<p><img src="/img/bountyhunter/bountyhunter_request.png" alt=""></p>
 <ul>
 <li>According to the JS code, the data should be encoded in plain, old Base64, but somehow certain parts of the data seems to be miserably screwed up</li>
 <li>I messed around in <a href="https://gchq.github.io/CyberChef" 
@@ -209,14 +209,14 @@ async function bountySubmit() {
 <li>The idea of decoding it, replace with my payload and send it programmatically flashed into my mind, but at the end I chose a lazy way instead - triggering that <code>returnSecret()</code> function manually in browser DevTool</li>
 <li>After a few time of trial and error, our target finally seems to be vulnerable to XXE</li>
 </ul>
-<p><img src="/img/bountyhunter_first_xxe.png" alt=""></p>
+<p><img src="/img/bountyhunter/bountyhunter_first_xxe.png" alt=""></p>
 <ul>
 <li>Next thing is just trial and error, and by that, I mean A LOT OF trials and errors. Come up with a payload, type it in Chrome&rsquo;s dev tool, check for responses in Burp Suite history (the dev tool console looks quite small to get any serious task done), see if it worked (and 9 out of 10 times, if didn&rsquo;t), and repeat</li>
 <li>I tried all the payloads on <a src="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing">OWASP referencing page</a>, and long story short, seems like it&rsquo;s not easy to get a RCE from this XXE</li>
 <li>Noticing that this site&rsquo;s using PHP, I changed my payload a bit, but still&hellip; nothing appeared. Blind XXE, and blind inject anything in general, is a pain ;-;</li>
 <li>That&rsquo;s when I thought of encode it in base64 (the same as the sending payload) rather than trying to get it by plaintext</li>
 </ul>
-<p><img src="/img/bountyhunter_log_submit_console.png" alt="">
+<p><img src="/img/bountyhunter/bountyhunter_log_submit_console.png" alt="">
 <br/></p>
 <ul>
 <li>And hey! Looks like I had got the content of that log_submit.php file</li>
@@ -263,7 +263,7 @@ http://10.10.11.100/js                   (Status: 403) [Size: 277]
 <ul>
 <li>It ran quite fast at the start, and quite a lot of errors at the end. But after all, it revealed a <code>/db.php</code> file, which sounds really exciting</li>
 </ul>
-<p><img src="/img/bountyhunter_last_burp.png" alt="">
+<p><img src="/img/bountyhunter/bountyhunter_last_burp.png" alt="">
 <br/></p>
 <ul>
 <li>And finally, it returned some very useful stuffs.</li>
@@ -290,7 +290,7 @@ development:x:1000:1000:Development:/home/development:/bin/bash
 <ul>
 <li>That <code>development</code> user looks interesting, so I tried it with the database credentials</li>
 </ul>
-<p><img src="/img/bountyhunter_ssh_login.png" alt="">
+<p><img src="/img/bountyhunter/bountyhunter_ssh_login.png" alt="">
 <br/></p>
 <ul>
 <li>And we got it! The user flag!

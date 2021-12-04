@@ -68,7 +68,7 @@
       "datePublished": "2021-12-02 22:05:00 \u002b0700 \u002b07",
       "dateModified" : "2021-12-02 22:05:00 \u002b0700 \u002b07",
       "url" : "https:\/\/git-akihakune.github.io\/blog\/myleetcodejourney\/",
-      "wordCount" : "1891",
+      "wordCount" : "2424",
       "keywords" : ["tech", "data structure", "algorithm", "programming", "tech", "english", "leetcode", "competitive programming", "Blog"]
     }
   
@@ -599,6 +599,144 @@ public:
     def reverseWords(self, s: str) -&gt; str:
         return &quot; &quot;.join([word[::-1] for word in s.split()])
 </code></pre>
+<h2 id="day-5-876-middle-of-the-linked-listhttpsleetcodecomproblemsmiddle-of-the-linked-list">Day 5: <a href="https://leetcode.com/problems/middle-of-the-linked-list/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>876. Middle of the Linked List</a></h2>
+<p><img src="/img/myleetcodejourney/876_problem.png" alt=""></p>
+<p>Solution: Get 2 pointers to iterate at different speed, the faster one is twice as fast as the slower one. When the faster pointer reach the end, the slower pointer should be in the middle.</p>
+<p>Accepted C++ implementation:</p>
+<pre><code class="language-cpp">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode *slow = head, *fast = head;
+        
+        while (fast != NULL &amp;&amp; fast -&gt; next != NULL) {
+            slow = slow -&gt; next;
+            fast = fast -&gt; next -&gt; next;
+        }
+        
+        return slow;
+    }
+};
+</code></pre>
+<p>For Python, I tried to store all nodes in a list and then pick the middle out. Unexptectedly, 2 algorithms run at exactly same speed (28ms) and memory (14.1 MB):</p>
+<pre><code class="language-python"># Should be slower, but wasn't.
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        allList: List[ListNode] = []
+        currentNode = head
+        
+        while True:
+            allList.append(currentNode)
+            if not currentNode.next: break
+            currentNode = currentNode.next
+            
+        return allList[len(allList) // 2]
+</code></pre>
+<pre><code class="language-python">class Solution:
+    def middleNode(self, head: Optional[ListNode]) -&gt; Optional[ListNode]:
+        slow: ListNode = head
+        fast: ListNode = head
+        
+        while fast != None and fast.next != None:
+            slow = slow.next
+            fast = fast.next.next
+        
+        return slow
+</code></pre>
+<h2 id="day-5-19-remove-nth-node-from-end-of-listhttpsleetcodecomproblemsremove-nth-node-from-end-of-list">Day 5: <a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>19. Remove Nth Node From End of List</a></h2>
+<p><img src="/img/myleetcodejourney/19_problem.png" alt=""></p>
+<p>Again, the solution is to have 2 pointers run with the distance <code>n</code>. When get to the node need to be deleted, simply link the previous node to the next node.</p>
+<p>C++ implementation (faster than 100% and run at 0ms. lmao proud :D):</p>
+<pre><code class="language-cpp">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        if (n == 0) return head;
+        
+        ListNode *fast = head, *slow = head;
+        int fastIndex = 0, slowIndex = 0;
+        
+        while (fast -&gt; next != NULL) {
+            fast = fast -&gt; next;
+            ++fastIndex;
+            
+            if (fastIndex - slowIndex &gt; n) {
+                slow = slow -&gt; next;
+                ++slowIndex;
+            }
+        }
+        
+        // For edge case
+        int linkedListSize = fastIndex + 1;
+        if (linkedListSize == n) return head -&gt; next;
+        
+        // Deleting by wiring previous to after deleting element
+        slow -&gt; next = slow -&gt; next -&gt; next;
+        
+        return head;
+    }
+};
+</code></pre>
+<p>Python implementation:</p>
+<pre><code class="language-python"># Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -&gt; Optional[ListNode]:
+        if n == 0: return head
+        
+        fast: ListNode = head
+        slow: ListNode = head
+        fastIndex = slowIndex = 0
+        
+        while fast.next != None:
+            fast = fast.next
+            fastIndex += 1
+            if fastIndex - slowIndex &gt; n:
+                slow = slow.next
+                slowIndex += 1
+            
+        linkedListSize: int = fastIndex + 1
+        if n == linkedListSize:
+            return head.next
+        
+        # Deleting
+        slow.next = slow.next.next
+        
+        return head
+</code></pre>
 <h1 id="daily-coding-problems">Daily coding problems</h1>
 <h2 id="december-2nd-328-odd-even-linked-listhttpsleetcodecomproblemsodd-even-linked-list">December 2nd: <a href="https://leetcode.com/problems/odd-even-linked-list" 
   
@@ -813,6 +951,8 @@ public:
     <li><a href="#day-3-167-two-sum-ii---input-array-is-sortedhttpsleetcodecomproblemstwo-sum-ii-input-array-is-sorted">Day 3: <a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/">167. Two Sum II - Input Array is Sorted</a></a></li>
     <li><a href="#day-4-344-reverse-stringhttpsleetcodecomproblemsreverse-string">Day 4: <a href="https://leetcode.com/problems/reverse-string/">344. Reverse String</a></a></li>
     <li><a href="#day-4-557-reverse-words-in-a-string-iiihttpsleetcodecomproblemsreverse-words-in-a-string-iii">Day 4: <a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/">557. Reverse Words in a String III</a></a></li>
+    <li><a href="#day-5-876-middle-of-the-linked-listhttpsleetcodecomproblemsmiddle-of-the-linked-list">Day 5: <a href="https://leetcode.com/problems/middle-of-the-linked-list/">876. Middle of the Linked List</a></a></li>
+    <li><a href="#day-5-19-remove-nth-node-from-end-of-listhttpsleetcodecomproblemsremove-nth-node-from-end-of-list">Day 5: <a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/">19. Remove Nth Node From End of List</a></a></li>
   </ul>
 
   <ul>

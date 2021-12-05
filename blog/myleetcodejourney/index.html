@@ -68,7 +68,7 @@
       "datePublished": "2021-12-02 22:05:00 \u002b0700 \u002b07",
       "dateModified" : "2021-12-02 22:05:00 \u002b0700 \u002b07",
       "url" : "https:\/\/git-akihakune.github.io\/blog\/myleetcodejourney\/",
-      "wordCount" : "2424",
+      "wordCount" : "2774",
       "keywords" : ["tech", "data structure", "algorithm", "programming", "tech", "english", "leetcode", "competitive programming", "Blog"]
     }
   
@@ -737,6 +737,99 @@ class Solution:
         
         return head
 </code></pre>
+<h2 id="day-6-3-longest-substring-without-repeating-characterhttpsleetcodecomproblemslongest-substring-without-repeating-characters">Day 6: <a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>3. Longest Substring Without Repeating Character</a></h2>
+<p><img src="/img/myleetcodejourney/3_problem.png" alt=""></p>
+<p>The general idea is: Store the last position that does not contain a certain character, for every character in the string. When meet the next occurence of that character, we can immediately know length of the longest substring up to that point.</p>
+<p>C++ implementation:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int maxcount = 0;
+        unordered_map&lt;char, int&gt; index;
+        
+        for (int left = 0, right = 0; right &lt; s.size(); ++right) {
+            if (index.find(s[right]) != index.end()) {
+                left = max(left, index[s[right]]);
+            }
+            maxcount = max(maxcount, right - left + 1);
+            index[s[right]] = right + 1;
+        }
+        
+        return maxcount;
+    }
+};
+</code></pre>
+<p>Python implementation:</p>
+<pre><code class="language-python">class Solution:
+    def lengthOfLongestSubstring(self, s: str) -&gt; int:
+        maxcount: int = 0
+        indexes: dict = {}
+        
+        i = 0
+        for j in range(len(s)):
+            if s[j] in indexes:
+                i = max(i, indexes[s[j]])
+            
+            maxcount = max(maxcount, j - i + 1)
+            indexes[s[j]] = j + 1
+            
+        return maxcount
+</code></pre>
+<h2 id="day-6-567-permutation-in-stringhttpsleetcodecomproblemspermutation-in-string">Day 6: <a href="https://leetcode.com/problems/permutation-in-string/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>567. Permutation in String</a></h2>
+<p><img src="/img/myleetcodejourney/567_problem.png" alt=""></p>
+<p>Just count. Since a permutation can never be longer than <code>s1</code>, let&rsquo;s just iterate through <code>s2</code> with a sliding window of length <code>s1</code> and check if it&rsquo;s a permutation by counting number of occurence of every characters.</p>
+<p>C++ implementation:</p>
+<pre><code class="language-cpp">class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        if (s1.size() &gt; s2.size())
+            return false;
+        
+        array&lt;int, 26&gt; s1map = {}; // all elements will be init to 0
+        for (auto c : s1)
+            ++s1map.at((int)(c - 'a'));
+        
+        for (int start = 0; start &lt; s2.size() - s1.size() + 1; ++start) {
+            array&lt;int, 26&gt; s2map = {};
+            for (int i = start; i &lt; start + s1.size(); ++i)
+                ++s2map.at((int)(s2[i] - 'a'));
+            
+            if (s1map == s2map)
+                return true;
+        }
+        
+        return false;
+    }
+};
+</code></pre>
+<p>Python implementation:</p>
+<pre><code class="language-python">class Solution:
+    def checkInclusion(self, s1: str, s2: str) -&gt; bool:
+        if len(s1) &gt; len(s2):
+            return False
+        
+        s1map = [0] * 26
+        for char in s1:
+            s1map[ord(char) - ord('a')] += 1
+        
+        # Sliding window
+        for start in range(len(s2) - len(s1) + 1):
+            s2map = [0] * 26
+            
+            for char in range(start, start + len(s1)):
+                s2map[ord(s2[char]) - ord('a')] += 1
+            
+            if s1map == s2map:
+                return True
+        
+        return False
+</code></pre>
 <h1 id="daily-coding-problems">Daily coding problems</h1>
 <h2 id="december-2nd-328-odd-even-linked-listhttpsleetcodecomproblemsodd-even-linked-list">December 2nd: <a href="https://leetcode.com/problems/odd-even-linked-list" 
   
@@ -953,6 +1046,8 @@ public:
     <li><a href="#day-4-557-reverse-words-in-a-string-iiihttpsleetcodecomproblemsreverse-words-in-a-string-iii">Day 4: <a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/">557. Reverse Words in a String III</a></a></li>
     <li><a href="#day-5-876-middle-of-the-linked-listhttpsleetcodecomproblemsmiddle-of-the-linked-list">Day 5: <a href="https://leetcode.com/problems/middle-of-the-linked-list/">876. Middle of the Linked List</a></a></li>
     <li><a href="#day-5-19-remove-nth-node-from-end-of-listhttpsleetcodecomproblemsremove-nth-node-from-end-of-list">Day 5: <a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/">19. Remove Nth Node From End of List</a></a></li>
+    <li><a href="#day-6-3-longest-substring-without-repeating-characterhttpsleetcodecomproblemslongest-substring-without-repeating-characters">Day 6: <a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/">3. Longest Substring Without Repeating Character</a></a></li>
+    <li><a href="#day-6-567-permutation-in-stringhttpsleetcodecomproblemspermutation-in-string">Day 6: <a href="https://leetcode.com/problems/permutation-in-string/">567. Permutation in String</a></a></li>
   </ul>
 
   <ul>

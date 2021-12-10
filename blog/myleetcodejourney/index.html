@@ -68,7 +68,7 @@
       "datePublished": "2021-12-02 22:05:00 \u002b0700 \u002b07",
       "dateModified" : "2021-12-02 22:05:00 \u002b0700 \u002b07",
       "url" : "https:\/\/git-akihakune.github.io\/blog\/myleetcodejourney\/",
-      "wordCount" : "2774",
+      "wordCount" : "3243",
       "keywords" : ["tech", "data structure", "algorithm", "programming", "tech", "english", "leetcode", "competitive programming", "Blog"]
     }
   
@@ -945,6 +945,127 @@ public:
 };
 </code></pre>
 <p>without comparing it with the above accepted code, can you figure out where&rsquo;s the flaw? :D</p>
+<h2 id="december-7th-1290-convert-binary-number-in-a-linked-list-to-intergerhttpsleetcodecomproblemsconvert-binary-number-in-a-linked-list-to-integer">December 7th: <a href="https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>1290. Convert Binary Number in a Linked List to Interger</a></h2>
+<p><img src="/img/myleetcodejourney/1290_problem.png" alt=""></p>
+<p>Nothing much to discuss here. Let&rsquo;s do some elementary math.</p>
+<p>At first I thought bitwise operators must be faster than doing normal operations, so I tried this:</p>
+<pre><code class="language-cpp">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    int getDecimalValue(ListNode* head) {
+        int decimal = 0;
+        ListNode* node = head;
+        
+        while (node != NULL) {
+            decimal = (decimal &lt;&lt; 1) | node -&gt; val;
+            node = node -&gt; next;
+        }
+        
+        return decimal;
+    }
+};
+</code></pre>
+<p>And it ran at 7ms. Not that bad. However, when I change this line:</p>
+<pre><code class="language-cpp">decimal = (decimal &lt;&lt; 1) | node -&gt; val;
+</code></pre>
+<p>Which are bitwise operators, to normal operators:</p>
+<pre><code class="language-cpp">decimal = decimal * 2 + node -&gt; val;
+</code></pre>
+<p>It ran at 4ms - slightly faster. Why?</p>
+<p>By the way, here&rsquo;s the Python implementation (faster than 97.4%, and please don&rsquo;t care about space complexity lol):</p>
+<pre><code class="language-python"># Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def getDecimalValue(self, head: ListNode) -&gt; int:
+        digits: List[str] = []
+        node = head
+        while node != None:
+            digits.append(str(node.val))
+            node = node.next
+            
+        return int(&quot;&quot;.join(digits), 2)
+</code></pre>
+<h2 id="december-8th-563-binary-tree-tilthttpsleetcodecomproblemsbinary-tree-tilt">December 8th: <a href="https://leetcode.com/problems/binary-tree-tilt/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>563. Binary Tree Tilt</a></h2>
+<p><img src="/img/myleetcodejourney/563_problem.png" alt=""></p>
+<p>Just basic recursive function. To find the <code>tilt</code> of a node, we first need to find its children <code>sum</code>. The same is also true for higher nodes, hence this C++ implementation:</p>
+<pre><code class="language-cpp">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int nodeSum(TreeNode* node, int&amp; total) {
+        if (node == NULL)
+            return 0;
+            
+        int leftSum = nodeSum(node -&gt; left, total);
+        int rightSum = nodeSum(node -&gt; right, total);
+        total += abs(leftSum - rightSum);
+        
+        return leftSum + rightSum + node -&gt; val;
+        
+    }
+    
+    int findTilt(TreeNode* root) {
+        int answer = 0;
+        
+        nodeSum(root, answer);
+        return answer;
+    }
+};
+</code></pre>
+<p>Faster than 95.64% by the way :D. And here&rsquo;s Python version of that exact algorithm:</p>
+<pre><code class="language-python"># Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findTilt(self, root: Optional[TreeNode]) -&gt; int:
+        answer: int = 0
+            
+        def nodeSum(node: TreeNode):
+            nonlocal answer
+            
+            if node == None:
+                return 0
+            
+            leftSum: int = nodeSum(node.left)
+            rightSum: int = nodeSum(node.right)
+            tilt = abs(leftSum - rightSum)
+            answer += tilt
+            
+            return node.val + leftSum + rightSum
+        
+        nodeSum(root)
+        return answer
+</code></pre>
 
 
               
@@ -1052,6 +1173,8 @@ public:
 
   <ul>
     <li><a href="#december-2nd-328-odd-even-linked-listhttpsleetcodecomproblemsodd-even-linked-list">December 2nd: <a href="https://leetcode.com/problems/odd-even-linked-list">328. Odd Even Linked List</a></a></li>
+    <li><a href="#december-7th-1290-convert-binary-number-in-a-linked-list-to-intergerhttpsleetcodecomproblemsconvert-binary-number-in-a-linked-list-to-integer">December 7th: <a href="https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/">1290. Convert Binary Number in a Linked List to Interger</a></a></li>
+    <li><a href="#december-8th-563-binary-tree-tilthttpsleetcodecomproblemsbinary-tree-tilt">December 8th: <a href="https://leetcode.com/problems/binary-tree-tilt/">563. Binary Tree Tilt</a></a></li>
   </ul>
 </nav>
       </div>

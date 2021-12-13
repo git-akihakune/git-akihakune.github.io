@@ -2,9 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://git-akihakune.github.io/</loc>
-    <lastmod>2021-12-11T06:41:15+07:00</lastmod>
-  </url><url>
     <loc>https://git-akihakune.github.io/blog/</loc>
     <lastmod>2021-12-11T06:41:15+07:00</lastmod>
   </url><url>
@@ -15,6 +12,9 @@
     <lastmod>2021-12-11T06:41:15+07:00</lastmod>
   </url><url>
     <loc>https://git-akihakune.github.io/blog/previse/</loc>
+    <lastmod>2021-12-11T06:41:15+07:00</lastmod>
+  </url><url>
+    <loc>https://git-akihakune.github.io/</loc>
     <lastmod>2021-12-11T06:41:15+07:00</lastmod>
   </url><url>
     <loc>https://git-akihakune.github.io/tags/</loc>
@@ -41,9 +41,19 @@
     <loc>https://git-akihakune.github.io/blog/bountyhunter/</loc>
     <lastmod>2021-11-20T20:13:06+07:00</lastmod>
   </url><url>
-    <loc>https://git-akihakune.github.io/blog/easy-hacktivitycon/</loc>
+    <loc>https://git-akihakune.github.io/blog/hacktivitycon/</loc>
     <lastmod>2021-11-12T14:33:03+07:00</lastmod>
   </url><url>
+    <loc>https://git-akihakune.github.io/archive/</loc>
+  </url><url>
+    <loc>https://git-akihakune.github.io/project/awaifu/</loc>
+  </url><url>
     <loc>https://git-akihakune.github.io/categories/</loc>
+  </url><url>
+    <loc>https://git-akihakune.github.io/project/</loc>
+  </url><url>
+    <loc>https://git-akihakune.github.io/search/</loc>
+  </url><url>
+    <loc>https://git-akihakune.github.io/static-resources/</loc>
   </url>
 </urlset>

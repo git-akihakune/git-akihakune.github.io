@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>tech on Hakune Blog</title>
     <link>https://git-akihakune.github.io/tags/tech/</link>
     <description>Recent content in tech on Hakune Blog</description>
+    <image>
+      <url>https://git-akihakune.github.io/static/maple-laptop.jpg</url>
+      <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
+    </image>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© 2021</copyright>
     <lastBuildDate>Sat, 11 Dec 2021 06:41:15 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/tech/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hack The Box - Previse writeup</title>
@@ -14,9 +16,7 @@
       <pubDate>Sat, 11 Dec 2021 06:41:15 +0700</pubDate>
       
       <guid>https://git-akihakune.github.io/blog/previse/</guid>
-      <description>Author: Aki Hakune Written on December 8th.
- I. Foothold It all began with a port scan:
-# Nmap 7.92 scan initiated Mon Dec 6 22:10:41 2021 as: nmap -sC -sV -oN nmap.txt 10.10.11.104 Nmap scan report for 10.10.11.104 Host is up (0.64s latency). Not shown: 998 closed tcp ports (conn-refused) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 53:ed:44:40:11:6e:8b:da:69:85:79:c0:81:f2:3a:12 (RSA) | 256 bc:54:20:ac:17:23:bb:50:20:f4:e1:6e:62:0f:01:b5 (ECDSA) |_ 256 33:c1:89:ea:59:73:b1:78:84:38:a4:21:10:0c:91:d8 (ED25519) 80/tcp open http?</description>
+      <description>A writeup for Hack The Box - Previse machine</description>
     </item>
     
     <item>
@@ -25,21 +25,16 @@
       <pubDate>Thu, 02 Dec 2021 22:05:00 +0700</pubDate>
       
       <guid>https://git-akihakune.github.io/blog/myleetcodejourney/</guid>
-      <description>These are my submissions from Leetcode, started from knowing nothing about advanced data structures and algorithms (and still is).
-Rather than to show off my code, this article is more like a progress revision for my algo journey. Therefore, it&amp;rsquo;ll be regularly updated.
-Who knows, maybe after months of 40 hours a day practicing, I will take a look back and find out how sacrilegious my code once was. :D</description>
+      <description>My Leetcode journey from scratch</description>
     </item>
     
     <item>
-      <title>Advent Of Cyber 3 Writeup</title>
+      <title>Try Hack Me - Advent Of Cyber 3 writeup</title>
       <link>https://git-akihakune.github.io/blog/adventofcyber3/</link>
       <pubDate>Thu, 02 Dec 2021 07:36:50 +0700</pubDate>
       
       <guid>https://git-akihakune.github.io/blog/adventofcyber3/</guid>
-      <description>Author: Aki Hakune Started writing on December 2nd 2021.
- Before reading this article, I strongly suggest you take your time and try the challenges out yourself, it will definitely worth your time!
-Since Try Hack Me has done an awesome job in explaining things plain and simple, I won&amp;rsquo;t repeat again their tutorial. Instead, I&amp;rsquo;ll try to summarize it in the most concise (but understandable) way I can.
-[Day 1] Web Exploitation: Save The Gifts So, today&amp;rsquo;s learning objective seems to be IDOR vulnerability, which stands for Insecure Direct Object Reference.</description>
+      <description>Writeup for 2021 Try Hack Me&amp;rsquo;s Advent of Cyber 3</description>
     </item>
     
     <item>
@@ -48,22 +43,16 @@ Since Try Hack Me has done an awesome job in explaining things plain and simple,
       <pubDate>Sat, 20 Nov 2021 20:13:06 +0700</pubDate>
       
       <guid>https://git-akihakune.github.io/blog/bountyhunter/</guid>
-      <description>Author: Aki Hakune Written on September 6th 2021.
- I. Enumeration  First things first, let&amp;rsquo;s start with a port scan!  ┌──(aki㉿kali)-[~/ctf/htb/BountyHunter] └─$ nmap -sC -sV -oN nmap.txt 10.10.11.100 Starting Nmap 7.91 ( https://nmap.org ) at 2021-09-06 23:35 EDT Nmap scan report for 10.10.11.100 Host is up (0.68s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 3072 d4:4c:f5:79:9a:79:a3:b0:f1:66:25:52:c9:53:1f:e1 (RSA) | 256 a2:1e:67:61:8d:2f:7a:37:a7:ba:3b:51:08:e8:89:a6 (ECDSA) |_ 256 a5:75:16:d9:69:58:50:4a:14:11:7a:42:c1:b6:23:44 (ED25519) 80/tcp open http Apache httpd 2.</description>
+      <description>Writeup for Bounty Hunter box on Hack The Box</description>
     </item>
     
     <item>
-      <title>Easy Hacktivitycon Challenges</title>
-      <link>https://git-akihakune.github.io/blog/easy-hacktivitycon/</link>
+      <title>Easy Hacktivitycon Challenges writeup</title>
+      <link>https://git-akihakune.github.io/blog/hacktivitycon/</link>
       <pubDate>Fri, 12 Nov 2021 14:33:03 +0700</pubDate>
       
-      <guid>https://git-akihakune.github.io/blog/easy-hacktivitycon/</guid>
-      <description>Author: Aki Hakune Started writing on September 18th 2021.
- Warmups - Tsunami Downloading the file and running file command, we get its file type - an audio file.
-Let&amp;rsquo;s think simple, and straight up open it in an audio editor - here I choose the open-source Audacity.
-And that&amp;rsquo;s it, we got the flag!
-Warmups - Pimple Follow the exact same procedure as Tsunami, we have:
-Okay so what&amp;rsquo;s a GIMP XCF image?</description>
+      <guid>https://git-akihakune.github.io/blog/hacktivitycon/</guid>
+      <description>Writeups for some easy challenges in hacktivitycon 2021</description>
     </item>
     
   </channel>

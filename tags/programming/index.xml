@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>programming on Hakune Blog</title>
     <link>https://git-akihakune.github.io/tags/programming/</link>
     <description>Recent content in programming on Hakune Blog</description>
+    <image>
+      <url>https://git-akihakune.github.io/static/maple-laptop.jpg</url>
+      <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
+    </image>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© 2021</copyright>
     <lastBuildDate>Thu, 02 Dec 2021 22:05:00 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>My Leetcode journey</title>
@@ -14,9 +16,7 @@
       <pubDate>Thu, 02 Dec 2021 22:05:00 +0700</pubDate>
       
       <guid>https://git-akihakune.github.io/blog/myleetcodejourney/</guid>
-      <description>These are my submissions from Leetcode, started from knowing nothing about advanced data structures and algorithms (and still is).
-Rather than to show off my code, this article is more like a progress revision for my algo journey. Therefore, it&amp;rsquo;ll be regularly updated.
-Who knows, maybe after months of 40 hours a day practicing, I will take a look back and find out how sacrilegious my code once was. :D</description>
+      <description>My Leetcode journey from scratch</description>
     </item>
     
   </channel>

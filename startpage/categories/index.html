@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="referrer" content="strict-origin" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Categories &middot; FreshStart</title>
+  
+  <meta name="description" content="Minimalism start page, customized to maximize productivity" />
+   <link rel="icon" href="/favicon.ico" /> 
+
+  <link rel="stylesheet" href="https://akihakune.github.io/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+</head>
+<body>
+<header>
+  <nav>
+    <div class="nav-left">
+      <ul>
+        
+        <li><a href="https://mail.google.com" title="Gmail"><i class="fas fa-envelope red"></i></a></li>
+        
+        <li><a href="https://twitter.com" title="Twitter"><i class="fab fa-twitter aqua"></i></a></li>
+        
+        <li><a href="https://www.facebook.com/notifications" title="Facebook"><i class="fab fa-facebook blue"></i></a></li>
+        
+        <li><a href="https://www.messenger.com/" title="messenger"><i class="fab fa-facebook-messenger purple"></i></a></li>
+        
+        <li><a href="https://www.youtube.com/feed/library" title="Youtube"><i class="fab fa-youtube red"></i></a></li>
+        
+        <li><a href="https://discord.com/app" title="Discord"><i class="fab fa-discord"></i></a></li>
+        
+        <li><a href="https://www.reddit.com/" title="Reddit"><i class="fab fa-reddit orange"></i></a></li>
+        
+      </ul>
+    </div>
+    <div class="nav-right">
+      <ul class="datetime">
+        <li class="date">
+          <i class="far fa-calendar"></i>&nbsp;
+          <span id="current_date"></span>
+        </li>
+        <li class="time">
+          <i class="far fa-clock"></i>&nbsp;
+          <span id="current_time"></span>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<main>
+    </main><script>
+  var timer = setInterval(function() {
+    localTimer();
+  }, 1000);
+
+  function addZero(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+
+  function localTimer() {
+    var today = new Date();
+    var time = addZero(today.getHours()) + ":" + addZero(today.getMinutes()) + ":" + addZero(today.getSeconds());
+    document.getElementById("current_time").innerHTML = time;
+
+    var date = today.getDate()+' . '+(today.getMonth()+1)+' . '+today.getFullYear();
+    document.getElementById("current_date").innerHTML = date;
+}
+</script>
+
+
+</body>
+</html>

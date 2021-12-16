@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>htb on Hakune Blog</title>
+    <link>https://git-akihakune.github.io/tags/htb/</link>
+    <description>Recent content in htb on Hakune Blog</description>
+    <image>
+      <url>https://git-akihakune.github.io/static/maple-laptop.jpg</url>
+      <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 17 Dec 2021 06:23:50 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack The Box Pwn challenge - racecar</title>
+      <link>https://git-akihakune.github.io/blog/racecar/</link>
+      <pubDate>Fri, 17 Dec 2021 06:23:50 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/racecar/</guid>
+      <description>A writeup for Hack The Box&amp;rsquo;s racecar pwn challenge</description>
+    </item>
+    
+  </channel>
+</rss>

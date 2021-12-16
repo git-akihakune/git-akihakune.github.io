@@ -9,7 +9,16 @@
       <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 11 Dec 2021 06:41:15 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 17 Dec 2021 06:23:50 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack The Box Pwn challenge - racecar</title>
+      <link>https://git-akihakune.github.io/blog/racecar/</link>
+      <pubDate>Fri, 17 Dec 2021 06:23:50 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/racecar/</guid>
+      <description>A writeup for Hack The Box&amp;rsquo;s racecar pwn challenge</description>
+    </item>
+    
     <item>
       <title>Hack The Box - Previse writeup</title>
       <link>https://git-akihakune.github.io/blog/previse/</link>

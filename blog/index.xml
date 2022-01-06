@@ -9,7 +9,16 @@
       <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 17 Dec 2021 07:36:50 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 06 Jan 2022 20:27:50 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Try Hack Me - Solar Log4j</title>
+      <link>https://git-akihakune.github.io/blog/solarlog4j/</link>
+      <pubDate>Thu, 06 Jan 2022 20:27:50 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/solarlog4j/</guid>
+      <description>Writeup for Try Hack Me&amp;rsquo;s Solar Log4j room</description>
+    </item>
+    
     <item>
       <title>Try Hack Me - Advent Of Cyber 3 writeup (Part 2)</title>
       <link>https://git-akihakune.github.io/blog/adventofcyber3-2/</link>

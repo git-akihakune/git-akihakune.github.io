@@ -9,7 +9,16 @@
       <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 25 Jan 2022 22:57:28 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 03 Feb 2022 20:41:31 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack The Box - Horizontall</title>
+      <link>https://git-akihakune.github.io/blog/horizontall/</link>
+      <pubDate>Thu, 03 Feb 2022 20:41:31 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/horizontall/</guid>
+      <description>Write up for Hack The Box&amp;rsquo;s Horizontall machine</description>
+    </item>
+    
     <item>
       <title>Try Hack Me - Blueprint</title>
       <link>https://git-akihakune.github.io/blog/blueprint/</link>

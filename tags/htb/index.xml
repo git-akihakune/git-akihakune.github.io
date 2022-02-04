@@ -9,7 +9,16 @@
       <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 17 Dec 2021 06:23:50 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/htb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 03 Feb 2022 20:41:31 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack The Box - Horizontall</title>
+      <link>https://git-akihakune.github.io/blog/horizontall/</link>
+      <pubDate>Thu, 03 Feb 2022 20:41:31 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/horizontall/</guid>
+      <description>Write up for Hack The Box&amp;rsquo;s Horizontall machine</description>
+    </item>
+    
     <item>
       <title>Hack The Box Pwn challenge - racecar</title>
       <link>https://git-akihakune.github.io/blog/racecar/</link>
@@ -17,6 +26,24 @@
       
       <guid>https://git-akihakune.github.io/blog/racecar/</guid>
       <description>A writeup for Hack The Box&amp;rsquo;s racecar pwn challenge</description>
+    </item>
+    
+    <item>
+      <title>Hack The Box - Previse writeup</title>
+      <link>https://git-akihakune.github.io/blog/previse/</link>
+      <pubDate>Sat, 11 Dec 2021 06:41:15 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/previse/</guid>
+      <description>A writeup for Hack The Box - Previse machine</description>
+    </item>
+    
+    <item>
+      <title>Hack The Box - Bounty Hunter writeup</title>
+      <link>https://git-akihakune.github.io/blog/bountyhunter/</link>
+      <pubDate>Sat, 20 Nov 2021 20:13:06 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/bountyhunter/</guid>
+      <description>Writeup for Bounty Hunter box on Hack The Box</description>
     </item>
     
   </channel>

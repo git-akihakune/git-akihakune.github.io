@@ -28,5 +28,14 @@
       <description>Writeup for Try Hack Me&amp;rsquo;s Solar Log4j room</description>
     </item>
     
+    <item>
+      <title>Try Hack Me - Advent Of Cyber 3 writeup (Part 1)</title>
+      <link>https://git-akihakune.github.io/blog/adventofcyber3/</link>
+      <pubDate>Thu, 02 Dec 2021 07:36:50 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/adventofcyber3/</guid>
+      <description>Writeup for 2021 Try Hack Me&amp;rsquo;s Advent of Cyber 3 (part 1)</description>
+    </item>
+    
   </channel>
 </rss>

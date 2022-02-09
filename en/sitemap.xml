@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://git-akihakune.github.io/blog/</loc>
-    <lastmod>2022-02-03T20:41:31+07:00</lastmod>
+    <lastmod>2022-02-09T13:08:56+07:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="vi"
@@ -16,7 +16,7 @@
                 />
   </url><url>
     <loc>https://git-akihakune.github.io/tags/ctf/</loc>
-    <lastmod>2022-02-03T20:41:31+07:00</lastmod>
+    <lastmod>2022-02-09T13:08:56+07:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="vi"
@@ -26,6 +26,48 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://git-akihakune.github.io/tags/ctf/"
+                />
+  </url><url>
+    <loc>https://git-akihakune.github.io/blog/driver/</loc>
+    <lastmod>2022-02-09T13:08:56+07:00</lastmod>
+  </url><url>
+    <loc>https://git-akihakune.github.io/</loc>
+    <lastmod>2022-02-09T13:08:56+07:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://git-akihakune.github.io/vi/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://git-akihakune.github.io/"
+                />
+  </url><url>
+    <loc>https://git-akihakune.github.io/tags/</loc>
+    <lastmod>2022-02-09T13:08:56+07:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://git-akihakune.github.io/vi/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://git-akihakune.github.io/tags/"
+                />
+  </url><url>
+    <loc>https://git-akihakune.github.io/tags/tech/</loc>
+    <lastmod>2022-02-09T13:08:56+07:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://git-akihakune.github.io/vi/tags/tech/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://git-akihakune.github.io/tags/tech/"
                 />
   </url><url>
     <loc>https://git-akihakune.github.io/blog/horizontall/</loc>
@@ -41,19 +83,6 @@
                 href="https://git-akihakune.github.io/blog/horizontall/"
                 />
   </url><url>
-    <loc>https://git-akihakune.github.io/</loc>
-    <lastmod>2022-02-03T20:41:31+07:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="vi"
-                href="https://git-akihakune.github.io/vi/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://git-akihakune.github.io/"
-                />
-  </url><url>
     <loc>https://git-akihakune.github.io/tags/htb/</loc>
     <lastmod>2022-02-03T20:41:31+07:00</lastmod>
     <xhtml:link
@@ -65,32 +94,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://git-akihakune.github.io/tags/htb/"
-                />
-  </url><url>
-    <loc>https://git-akihakune.github.io/tags/</loc>
-    <lastmod>2022-02-03T20:41:31+07:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="vi"
-                href="https://git-akihakune.github.io/vi/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://git-akihakune.github.io/tags/"
-                />
-  </url><url>
-    <loc>https://git-akihakune.github.io/tags/tech/</loc>
-    <lastmod>2022-02-03T20:41:31+07:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="vi"
-                href="https://git-akihakune.github.io/vi/tags/tech/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://git-akihakune.github.io/tags/tech/"
                 />
   </url><url>
     <loc>https://git-akihakune.github.io/tags/thm/</loc>

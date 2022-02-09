@@ -9,7 +9,16 @@
       <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 03 Feb 2022 20:41:31 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/tech/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 09 Feb 2022 13:08:56 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/tags/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack The Box - Driver</title>
+      <link>https://git-akihakune.github.io/blog/driver/</link>
+      <pubDate>Wed, 09 Feb 2022 13:08:56 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/driver/</guid>
+      <description>A writeup for Driver machine from Hack The Box</description>
+    </item>
+    
     <item>
       <title>Hack The Box - Horizontall</title>
       <link>https://git-akihakune.github.io/blog/horizontall/</link>

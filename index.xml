@@ -9,7 +9,16 @@
       <link>https://git-akihakune.github.io/static/maple-laptop.jpg</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 21 Apr 2022 11:56:40 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 May 2022 15:26:39 +0700</lastBuildDate><atom:link href="https://git-akihakune.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>An Introduction to Android Pentesting</title>
+      <link>https://git-akihakune.github.io/blog/start-with-android-pentest/</link>
+      <pubDate>Fri, 06 May 2022 15:26:39 +0700</pubDate>
+      
+      <guid>https://git-akihakune.github.io/blog/start-with-android-pentest/</guid>
+      <description>The basic tools &amp;amp; techniques to step into Android Penetration Testing</description>
+    </item>
+    
     <item>
       <title>Hack The Box - Backdoor</title>
       <link>https://git-akihakune.github.io/blog/backdoor/</link>
